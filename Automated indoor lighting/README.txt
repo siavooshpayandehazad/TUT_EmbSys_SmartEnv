@@ -1,0 +1,1 @@
+All the automated indoor lighting related files goes here…

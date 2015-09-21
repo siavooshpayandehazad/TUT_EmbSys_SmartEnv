@@ -1,0 +1,1 @@
+All the autonomous outdoor sensor related files goes here…
