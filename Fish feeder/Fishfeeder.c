@@ -13,18 +13,18 @@
  *                                              CCCCC   F       A     A                                                       *
  *                                                                                                                            *
  *                                           Common firmware application SW                                                   *
- *                                                                                                                            *                                                                              *
+ *                                                                                                                            * 
  *                                                                                                                            *
  $                 $Workfile::   main.c                                                                                       $
  $                 $Revision::   1.0                                                                                          $
  $                     $Date::   13.10.2015                                                                                   $
- *                                                        																	  *
+ *                                                        								      *
  *                    Manager:   Yuanxu Xu                                                                                    *
- *                 Developers:   Martin Grosberg																			  *
- *                  			 Aivar Koodi																				  *
- *								 Marek Aare																					  *
- *		                         Sander Sinijärv																			  *
- *		                         Kätlin Lahtvee                                                                               *
+ *                 Developers:   Martin Grosberg									      *
+ *                  		 Aivar Koodi										      *
+ *				 Marek Aare										      *
+ *		                 Sander Sinijärv									      *
+ *		                 Kätlin Lahtvee                                                                               *
  *                     Target:   Fishfeeder Project 2015                                                                      *
  *                                                                                                                            *
  *****************************************************************************************************************************/
