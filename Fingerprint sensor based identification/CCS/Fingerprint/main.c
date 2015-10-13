@@ -6,7 +6,7 @@
 int main(void) {
 	int test = 0;
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
-	printf("La vie est cool !");
+	printf("Bonjour !");
 	while(test)
 		printf("test again");
 	return 0;
