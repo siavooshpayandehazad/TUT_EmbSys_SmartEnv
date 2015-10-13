@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+# Project
+*.ccsproject
+*.cproject
+*.project
+*.prefs
