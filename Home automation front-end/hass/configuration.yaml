@@ -1,0 +1,79 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: EmbSys
+  # Location required to calculate the time the sun rises and sets
+  latitude: 59
+  longitude: 26
+  # C for Celcius, F for Fahrenheit
+  temperature_unit: C
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Tallinn
+  #api_password sysemb
+
+# Track the sun
+sun:
+
+# View all events in a logbook
+logbook:
+
+# Enables support for tracking state changes over time.
+history:
+
+# Enables the frontend
+frontend:
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend
+#conversation:
+
+# Show links to resources in log and frontend
+#introduction:
+
+group:
+  RFID:
+    - switch.door
+
+sensor 1:
+  platform: command_sensor
+  name: CPU
+  command: "sh /home/manki/.homeassistant/scr/cpu_freq.sh"
+  unit_of_measurement: "MHz"
+  decimal_places: 0
+
+sensor 2:
+  platform: command_sensor
+  name: Door
+  command: "cat /home/manki/.homeassistant/data/p2.lock"
+  decimal_places: 0
+
+switch Door:
+  platform: command_switch
+  name: "Front door"
+  switches:
+    door:
+      oncmd: "echo 1 > /home/manki/.homeassistant/data/p2.lock"
+      offcmd: "echo 0 > /home/manki/.homeassistant/data/p2.lock"
+
+automation:
+- alias: Update door on
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.door
+    above: 1
+  action:
+    entity_id: switch.door
+    service: switch.turn_on
+
+- alias: Update door off
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.door
+    below: 1
+  action:
+    entity_id: switch.door
+    service: switch.turn_off
+
+hello_world:
+
