@@ -13,12 +13,12 @@
  *                                              CCCCC   F       A     A                                                       *
  *                                                                                                                            *
  *                                           Common firmware application SW                                                   *
- *                                                                                                                            * 
+ *                                                                                                                            *
  *                                                                                                                            *
  $                 $Workfile::   main.c                                                                                       $
  $                 $Revision::   1.0                                                                                          $
  $                     $Date::   13.10.2015                                                                                   $
- *                                                        								      *
+ *                                                        								      								  *
  *                    Manager:   Yuanxu Xu                                                                                    *
  *                 Developers:   Martin Grosberg									      *
  *                  		 Aivar Koodi										      *
@@ -62,6 +62,41 @@ int main(void) {
 	return 0;
 }
 
+void timerA(){
+
+}
+
+void timerB(){
+
+}
+
+void temperature(){
+
+}
+
+void lighting(){
+
+
+}
+
+void waterlevel(){
+	
+}
+
+void feedlevel(){
+	
+}
+
+void motor(){
+	
+}
+
+void UART(){
+
+}
+
 /***************************************************************************************************
  *         History of changes                                                                       *
  ***************************************************************************************************/
+
+//[Week 8] Added empty function slots for future code.
