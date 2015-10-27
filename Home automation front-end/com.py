@@ -3,6 +3,8 @@
 import serial
 import time
 
+# TODO: create config file for values such as serial port or baudrate
+
 def init():
     return serial.Serial(
         port = '/dev/ttyACM0',

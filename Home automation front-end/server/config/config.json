@@ -1,0 +1,10 @@
+{
+  "name": "tut-home-automation-fe",
+
+  "log": {
+    "level": "trace"
+  },
+
+  "address": 4
+
+}
