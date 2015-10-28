@@ -2,9 +2,6 @@
 #include <string.h>
 #include "i2c_1602_lib.h"
 
-#define LED_PIN 26
-#define BUTTON_PIN 19
-
 #define LED_ON
 #define LED_OFF
 
@@ -232,6 +229,4 @@ void initLCD(){
  // printf("LCDclear done \n");
   lcdcursor(0, 0);
  // printf("Cursor set 0,0 \n");
-
-  return;
 }

@@ -132,7 +132,7 @@ uint16_t UartReceiveBytesInBuffer(uint8_t* buf)
 
     // Hold off ints for incoming data during the copy
     //OLD UCA0IE &= ~UCRXIE;
-    IE2 |= UCA0RXIE;
+    IE2 &= ~UCA0RXIE;
 
     for(i=0; i<UartRcvBufIndex; i++)
     {

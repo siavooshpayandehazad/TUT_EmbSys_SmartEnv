@@ -237,7 +237,7 @@ void FPS_GT511C3::Open()
 	unsigned char* packetbytes = cp->GetPacketBytes();
 	SendCommand(packetbytes, 12);
 	Response_Packet* rp = GetResponse();
-	//delete rp;
+	delete rp;
 	delete packetbytes;
 }
 
@@ -281,10 +281,10 @@ bool FPS_GT511C3::SetLED(bool on)
 	cp->Parameter[3] = 0x00;
 	unsigned char* packetbytes = cp->GetPacketBytes();
 	SendCommand(packetbytes, 12);
-	//Response_Packet* rp = GetResponse();
+	Response_Packet* rp = GetResponse();
 	bool retval = true;
-	//if (rp->ACK == false) retval = false;
-	//delete rp;
+	if (rp->ACK == false) retval = false;
+	delete rp;
 	delete packetbytes;
 	delete cp;
 	return retval;

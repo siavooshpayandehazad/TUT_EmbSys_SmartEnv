@@ -7,9 +7,12 @@
  ***************************************************************************************************/
 #include <msp430.h>
 #include <stdlib.h>
-#include "i2c_1602_lib.h"
 #include "MSP_FPS_GT511C3.hpp"
 #include "uartCustom.h"
+
+extern "C" {
+#include "i2c_1602_lib.h"
+}
 
 
 
@@ -39,6 +42,7 @@ int main(void)
 
   WDTCTL = WDTPW+WDTHOLD;                   // Stop WDT
   P1DIR |= BIT0;                            // P1.0 set as output                     // For debugger
+  P3DIR |= BITA;                            // P3.A set as output
 
   /* Configuration CPU Clock */
 
@@ -66,13 +70,12 @@ int main(void)
   __bis_SR_register(GIE);       // Enter LPM0, interrupts enabled
   // __no_operation();
 
-/*
+
   initLCD();
   lcdcursor(0,0);
-  lcdword("Hello user !");
+  lcdword("Starting ...");
   lcdcursor(0,1);
-  lcdword("Waiting...");
-*/
+  lcdword(":) :) :)");
 
   FPS_GT511C3 fps(1, 2);
   fps.UseSerialDebug = false;
