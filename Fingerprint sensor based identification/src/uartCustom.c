@@ -129,22 +129,26 @@ void UartSendByte(uint8_t byte){
 uint16_t UartReceiveBytesInBuffer(uint8_t* buf)
 {
     uint16_t i, count;
+    while(UartRcvBufIndex != 12); //wait for all data to be received
 
     // Hold off ints for incoming data during the copy
-    //OLD UCA0IE &= ~UCRXIE;
     IE2 &= ~UCA0RXIE;
 
+    //get the buffer stored duing interrupts
     for(i=0; i<UartRcvBufIndex; i++)
     {
         buf[i] = UartRcvBuf[i];
     }
 
     count = UartRcvBufIndex;
+
+    //clear buffer
+    for(i=0; i<UartRcvBufIndex; i++)
+    	UartRcvBuf[i] = 0;
     UartRcvBufIndex = 0;     // Move index back to the beginning of the buffer
     UartRxThreshReached = 0;
 
     // Restore USCI interrupts, to resume receiving data.
-    //OLD UCA1IE |= UCRXIE;
     IE2 |= UCA0RXIE;
 
     return count;
@@ -155,8 +159,18 @@ uint16_t UartReceiveBytesInBuffer(uint8_t* buf)
 #pragma vector = USCIAB0RX_VECTOR
 __interrupt void UartISR(void)
 {
-    UartRcvBuf[UartRcvBufIndex++] = UCA0RXBUF;  // Fetch the byte, store
-                                                    // it in the buffer.
+	//synchronize data received --> it starts
+	if(UCA0RXBUF == 0x55)
+		UartRcvBufIndex = 0;
+	else
+		if(UCA0RXBUF == 0xAA) //to be sure to do not miss the start point
+		{
+			UartRcvBufIndex = 1;
+			UartRcvBuf[0] = 0x55;
+		}
+
+	UartRcvBuf[UartRcvBufIndex++] = UCA0RXBUF;  // Fetch the byte, store
+                                                    // it in the buffer
 
     // Wake main, to fetch data from the buffer.
     if(UartRcvBufIndex >= RX_WAKE_THRESH)

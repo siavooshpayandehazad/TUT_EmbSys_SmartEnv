@@ -361,7 +361,7 @@ bool FPS_GT511C3::CheckEnrolled(int id)
 }
 
 // Starts the Enrollment Process
-// Parameter: 0-199
+// Parameter: 0-19
 // Return:
 //	0 - ACK
 //	1 - Database is full
