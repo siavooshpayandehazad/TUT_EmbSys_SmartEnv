@@ -5,17 +5,8 @@
 
 #define RX		BIT1
 #define TX		BIT2
-#define NumberOfLEDs 2 //if you want to change number of LEDs edit this line only.
 
-//read UART
-#define readUart	UART_data_I = UCA0RXBUF;
-#define writeUartInArray ledValue_I[ledInpCount_I] = UART_data_I;
-#define checkArrayIndexer ledInpCount_I =((ledInpCount_I == NumberOfLEDs - 1) ? 0 : (ledInpCount_I + 1));
-
-//LED values writing
-int ledValue_I[NumberOfLEDs] = { 0 };
-int ledInpCount_I = 0;
-int UART_data_I = 0;
+int pos = 0;   // Index to PWM's duty cycle table (= brightness)
 
 /*
  * DO NOT MODIFY
@@ -68,15 +59,9 @@ int main(void) {
 	// OUTMOD_7 = Reset/set output when the timer counts to TACCR1/TACCR0
 	// CCIE = Interrupt when timer counts to TACCR1
 	TACCTL1 = OUTMOD_7 | CCIE;
-	// TACCTL1 = CCIE;
-	// TACCTL2 = CCIE;
 
 	// Initial CCR1 (= brightness)
-	TACCR0 = 625;
-	TACCR1 = 200;
-	TACCR2 = 100;
-	ledValue_I[0]= 200;
-	ledValue_I[1]= 100;
+	TACCR1 = 0;
 
 	__enable_interrupt();
 	__bis_SR_register(LPM0 | GIE);
@@ -87,40 +72,10 @@ int main(void) {
 #pragma vector=TIMER0_A1_VECTOR
 __interrupt void Timer_A1(void) {
 	TACCTL1 &= ~CCIFG;
-	TACCR1 = ledValue_I[0];
-	/*
-	switch ( TAIV ) {
-	case 2:
-		TACCR1 = ledValue_I[0];
-		break;                          // CCR1 not used
-	case 4:
-		TACCR2 = ledValue_I[1];
-		break;                          // CCR2 not used
-	}
-
-	switch ( TAIV ) {
-	case 2:
-		TACCTL1 &= ~CCIFG;
-		break;                          // CCR1 not used
-	case 4:
-		TACCTL2 &= ~CCIFG;
-		break;                          // CCR2 not used
-	}
-	*/
+	TACCR1 = pos;
 }
 
-//UART interrupt
 #pragma vector=USCIAB0RX_VECTOR
 __interrupt void USCI0RX_ISR(void) {
-//to make it work, send 8 bits of LED data one by one - LEDNUMBER times, From UART
-
-	//data from UART is written into a variable UART_data_I
-	readUart
-	;
-	//UART_data_I is written into a appropriate array element
-	writeUartInArray
-	;
-	//if array element counter(that points to) is more than 7, it is resetted to 0
-	checkArrayIndexer
-	;
+	pos = UCA0RXBUF;
 }
