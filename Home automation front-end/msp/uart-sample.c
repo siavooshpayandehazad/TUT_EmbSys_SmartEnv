@@ -12,27 +12,23 @@
  * This is sample code for testing uart connection between MSP and Raspberry
 */
 
-// Packet structure: {length, from, to, data, ...}
-// Max length 19. Extra byte for delimiter
-unsigned char packet[20] = {8, 2, 4, 'C', 'a', 'b', 'c', 'd', 0};
-// Byte that indicates the end of packet.
-const unsigned char packetDelimiter = 0;
-
-// While receiving data to replace current packet variable,
-// this is index where received byte should be written in array.
-unsigned char receivePosition = 0;
+// Packet structure: {data length, from, to, encryption, conf, data, ...}
+// Total length 21
+unsigned char packet[21] = {16, 2, 4, 0, 0, 'C', 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 0, 0, 0, 0, 0};
+unsigned char headerSize = 5;
+unsigned char totalSize = 21;
 
 /**
  * Send multiple bytes over uart.
  */
 void uartSend(unsigned char* data) {
-  while (*data != packetDelimiter) {
+  unsigned char dataLength = data[0] + headerSize;
+  unsigned char i = 0;
+  for (; i < dataLength; ++i) {
     while (!(IFG2 & UCA0TXIFG));
-    UCA0TXBUF = *data;
-    ++data;
+    UCA0TXBUF = data[i];
   }
 
-  // Wait for last byte to be sent
   while (!(IFG2 & UCA0TXIFG));
 }
 
@@ -83,19 +79,36 @@ int main(void) {
 	return 0;
 }
 
+// While receiving data to replace current packet variable,
+// this is index where received byte should be written in array.
+unsigned char receivePosition = 0;
+// Length of current incoming packet.
+unsigned char receiveLength;
+
+// TODO: timeout between consecutively received bytes
 #pragma vector=USCIAB0RX_VECTOR
 __interrupt void USCI0RX_ISR(void) {
   P1OUT |= LED_G;
 
   packet[receivePosition] = UCA0RXBUF;
 
-  if (packet[receivePosition] == packetDelimiter) {
+  if (receivePosition == 0) {
+    receiveLength = packet[receivePosition] + headerSize;
+  }
+
+  ++receivePosition;
+
+  if (receivePosition == receiveLength) {
+
+    while (receivePosition < totalSize) {
+      packet[receivePosition++] = 0;
+    }
+
     receivePosition = 0;
+
     // TODO: Should acknowledge that packet is received?
     // Some special char should be used that connot be 1st byte of any real packet.
     // For example, 0x01, because no real packet has lenght of 1 (first byte is length)
-  } else {
-    ++receivePosition;
   }
 
   P1OUT ^= LED_G;
@@ -106,7 +119,7 @@ __interrupt void Port_1(void) {
   P1OUT |= LED_R;
   P1IFG &= ~BTN;
 
-  uartSend(&packet);
+  uartSend(packet);
 
   P1OUT ^= LED_R;
 }
