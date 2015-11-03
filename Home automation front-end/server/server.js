@@ -2,47 +2,41 @@
 
 var bunyan = require('bunyan');
 var config = require('easy-config');
-var RSMQWorker = require('rsmq-worker');
+var SerialPort = require('serialport').SerialPort;
 
 
-var log = bunyan.createLogger({
-    name: 'hafe-server',
-    level: config.log.level || 'trace'
-});
+var log = bunyan.createLogger(config.log);
 
 var router = require('./routes')({
     id: 'main',
     log: log
 });
 
-var packetProcessor = new RSMQWorker('packets', {
-    redisPrefix: 'rsmq'
-});
 
-packetProcessor.on('message', function (packet, done) {
-    log.info({packet: packet}, 'Incoming packet');
+var serial = new SerialPort(config.serial.device, config.serial);
 
-    try {
-        packet = JSON.parse(packet);
-    } catch (err) {
-        log.error({error: err}, 'Failed to parse packet');
-        done(err);
+serial.on('open', function (err) {
+    if (err) {
+        log.error({error: err, config: config.serial}, 'Failed to open serial port. Exiting');
+        process.exit(1);
         return;
     }
 
-    router.request(packet, done);
+    log.info({config: config.serial}, 'Serial port opened');
+
+    // Packet being received
+    var receivePacket = [];
+
+    serial.on('data', function(data) {
+        log.info({data: data}, 'Incoming packet');
+
+
+
+/*
+        router.request(packet, function (err) {
+
+        });
+*/
+    });
 });
 
-// TODO: Error listeners
-packetProcessor.on('error', function( err, msg ){
-    console.log( "ERROR", err, msg.id );
-});
-packetProcessor.on('exceeded', function( msg ){
-    console.log( "EXCEEDED", msg.id );
-});
-packetProcessor.on('timeout', function( msg ){
-    console.log( "TIMEOUT", msg.id, msg.rc );
-});
-
-packetProcessor.start();
-log.info('Listening for packets');

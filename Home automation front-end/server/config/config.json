@@ -2,9 +2,22 @@
   "name": "tut-home-automation-fe",
 
   "log": {
+    "name": "hafe-server",
     "level": "trace"
   },
 
-  "address": 4
+  "rf": {
+    "address": 4
+  },
 
+  "serial": {
+    "device": "/dev/ttyACM0",
+    "baudrate": 9600,
+    "dataBits": 8,
+    "stopBits": 1,
+    "parity": "none",
+    "platformOptions": {
+      "vmin": 21
+    }
+  }
 }

@@ -5,7 +5,8 @@
     "bunyan": "^1.3.5",
     "easy-config": "^0.4.9",
     "rsmq": "^0.3.16",
-    "rsmq-worker": "^0.3.7"
+    "rsmq-worker": "^0.3.7",
+    "serialport": "^2.0.2"
   },
   "description": "Server for home automation",
   "main": "app.js",
