@@ -14,9 +14,13 @@ function Router(opts) {
         return new Router(opts);
     }
 
+    opts = (opts instanceof Router) ? opts._opts : opts;
+
     if (!opts || !opts.log) {
         throw new Error('Router: cannot initialize with no opts');
     }
+
+    this._opts = opts;
 
     this._log = opts.log;
 
@@ -25,14 +29,14 @@ function Router(opts) {
 }
 
 /**
- * Create request object from raw data (byte array) and invoke handlers.
+ * Create request object from raw data buffer and invoke handlers.
  */
 Router.prototype.request = function (data, next) {
     this._log.trace({data: data}, 'Routing request');
 
     var packet = {
-        route: null,
-        data: data
+        raw: data,
+        route: null
     };
 
     this._invoke(packet, next);
@@ -43,9 +47,13 @@ Router.prototype.middleware = function middleware(fn) {
     this._middleware.push(fn);
 };
 
-Router.prototype.route = function handler(route, fn) {
+Router.prototype.route = function handler(route, handler) {
+    if (!(handler instanceof Router) && typeof handler !== 'function') {
+        throw new TypeError('Expecting route handler to be Router object or function');
+    }
+
     this._log.trace({id: this._id, route: route}, 'Adding route');
-    this._handlers[route] = fn;
+    this._handlers[route] = handler;
 };
 
 Router.prototype._invokeMiddleware = function _invokeMiddleware(req) {
@@ -76,11 +84,9 @@ Router.prototype._invoke = function _invoke(packet, next) {
     }
 
     if (typeof handler === 'function') {
-        setImmediate(handler.bind(null, packet, next));
+        setImmediate(handler.bind(this, packet, next));
         return;
     }
-
-    // TODO: invalid route error
 };
 
 module.exports = Router;

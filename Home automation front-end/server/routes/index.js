@@ -6,14 +6,14 @@ module.exports = function (opts) {
     var router = new Router(opts);
 
     router.middleware(function (packet) {
-        packet.length = packet.data[0];
-        packet.from = packet.data[1];
-        packet.to = packet.data[2];
+        packet.dataLength = packet.raw[0];
+        packet.from = packet.raw[1];
+        packet.to = packet.raw[2];
         packet.route = packet.from;
-        packet.data = packet.data.slice(3);
+        packet.data = packet.raw.slice(5);
     });
 
-    router.route(2, require('./rfid')({log: opts.log}));
+    router.route(2, require('./rfid')(router));
 
     return router;
 };

@@ -24,19 +24,18 @@ serial.on('open', function (err) {
 
     log.info({config: config.serial}, 'Serial port opened');
 
+    // TODO: flush callback
+    serial.flush();
+
     // Packet being received
     var receivePacket = [];
 
     serial.on('data', function(data) {
         log.info({data: data}, 'Incoming packet');
 
-
-
-/*
-        router.request(packet, function (err) {
+        router.request(data, function (err) {
 
         });
-*/
     });
 });
 
