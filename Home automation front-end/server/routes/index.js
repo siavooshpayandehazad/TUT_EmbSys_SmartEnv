@@ -7,8 +7,8 @@ module.exports = function (opts) {
 
     router.middleware(function (packet) {
         packet.dataLength = packet.raw[0];
-        packet.from = packet.raw[1];
-        packet.to = packet.raw[2];
+        packet.to = packet.raw[1];
+        packet.from = packet.raw[2];
         packet.route = packet.from;
         packet.data = packet.raw.slice(5);
     });

@@ -14,23 +14,15 @@
 
 // Packet structure: {data length, from, to, encryption, conf, data, ...}
 // Total length 21
-unsigned char packet[21] = {16, 2, 4, 0, 0, 'C', 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 0, 0, 0, 0, 0};
+unsigned char packet[21] = {16, 4, 2, 0, 0, 'C', 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 0, 0, 0, 0, 0};
 unsigned char headerSize = 5;
 unsigned char totalSize = 21;
 
-/**
- * Send multiple bytes over uart.
- */
-void uartSend(unsigned char* data) {
-  unsigned char dataLength = data[0] + headerSize;
-  unsigned char i = 0;
-  for (; i < dataLength; ++i) {
-    while (!(IFG2 & UCA0TXIFG));
-    UCA0TXBUF = data[i];
-  }
+unsigned char receivedPacket[21] = {16, 4, 2, 0, 0, 'C', 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 0, 0, 0, 0, 0};
 
-  while (!(IFG2 & UCA0TXIFG));
-}
+// Function declarations
+void uartSend(unsigned char* data);
+void onPacketReceved(unsigned char* packet);
 
 int main(void) {
   /* DO NOT MODIFY */
@@ -88,12 +80,12 @@ unsigned char receiveLength;
 // TODO: timeout between consecutively received bytes
 #pragma vector=USCIAB0RX_VECTOR
 __interrupt void USCI0RX_ISR(void) {
-  P1OUT |= LED_G;
+  P1OUT |= LED_R;
 
-  packet[receivePosition] = UCA0RXBUF;
+  receivedPacket[receivePosition] = UCA0RXBUF;
 
   if (receivePosition == 0) {
-    receiveLength = packet[receivePosition] + headerSize;
+    receiveLength = receivedPacket[receivePosition] + headerSize;
   }
 
   ++receivePosition;
@@ -101,17 +93,19 @@ __interrupt void USCI0RX_ISR(void) {
   if (receivePosition == receiveLength) {
 
     while (receivePosition < totalSize) {
-      packet[receivePosition++] = 0;
+      receivedPacket[receivePosition++] = 0;
     }
 
     receivePosition = 0;
+
+    onPacketReceved(receivedPacket);
 
     // TODO: Should acknowledge that packet is received?
     // Some special char should be used that connot be 1st byte of any real packet.
     // For example, 0x01, because no real packet has lenght of 1 (first byte is length)
   }
 
-  P1OUT ^= LED_G;
+  P1OUT ^= LED_R;
 }
 
 #pragma vector=PORT1_VECTOR
@@ -122,4 +116,30 @@ __interrupt void Port_1(void) {
   uartSend(packet);
 
   P1OUT ^= LED_R;
+}
+
+/**
+ * Send multiple bytes over uart.
+ */
+void uartSend(unsigned char* data) {
+  unsigned char dataLength = data[0] + headerSize;
+  unsigned char i = 0;
+  for (; i < dataLength; ++i) {
+    while (!(IFG2 & UCA0TXIFG));
+    UCA0TXBUF = data[i];
+  }
+
+  while (!(IFG2 & UCA0TXIFG));
+}
+
+void onPacketReceved(unsigned char* packet) {
+  if (packet[5] != 'L') {
+    return;
+  }
+
+  if (packet[6] != 0) {
+    P1OUT |= LED_G;
+  } else {
+    P1OUT &= ~LED_G;
+  }
 }

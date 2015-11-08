@@ -12,12 +12,27 @@
 
   "serial": {
     "device": "/dev/ttyACM0",
-    "baudrate": 9600,
-    "dataBits": 8,
-    "stopBits": 1,
-    "parity": "none",
-    "platformOptions": {
-      "vmin": 21
-    }
+    "options": {
+      "baudrate": 9600,
+      "dataBits": 8,
+      "stopBits": 1,
+      "parity": "none",
+      "platformOptions": {
+        "vmin": 21
+      }
+    },
+    "retry": 3000
+  },
+
+  "hass": {
+    "bufferFile": "data-from-hass.local"
+  },
+
+  "mysql": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "pass": "",
+    "db": "hafe"
   }
 }

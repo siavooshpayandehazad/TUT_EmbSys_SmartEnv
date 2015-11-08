@@ -3,6 +3,9 @@
 var Router = require('../lib/router');
 var middleware = require('./middleware');
 
+var db = require('../lib/db')();
+var RfidCard = db.models.RfidCard;
+
 module.exports = function (parent) {
     var log = parent._log;
 
