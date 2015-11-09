@@ -32,48 +32,46 @@ discovery:
 #introduction:
 
 group:
-  RFID:
-    - switch.door
+  Front door:
+    - switch.door_lock
 
 sensor 1:
   platform: command_sensor
   name: CPU
-  command: "sh /home/manki/.homeassistant/scr/cpu_freq.sh"
+  command: "sh ./scr/cpu_freq.sh"
   unit_of_measurement: "MHz"
   decimal_places: 0
 
 sensor 2:
   platform: command_sensor
-  name: Door
-  command: "cat /home/manki/.homeassistant/data/p2.lock"
+  name: door_lock_state
+  command: "cat ./data/p2.lock"
   decimal_places: 0
 
-switch Door:
+switch door_lock:
   platform: command_switch
-  name: "Front door"
   switches:
-    door:
-      oncmd: "echo 1 > /home/manki/.homeassistant/data/p2.lock"
-      offcmd: "echo 0 > /home/manki/.homeassistant/data/p2.lock"
+    Door lock:
+      oncmd: "sh ./scr/comm.sh 02 L 1"
+      offcmd: "sh ./scr/comm.sh 02 L 0"
 
 automation:
-- alias: Update door on
+- alias: "Update door lock on"
   trigger:
     platform: numeric_state
-    entity_id: sensor.door
+    entity_id: sensor.door_lock_state
     above: 1
   action:
-    entity_id: switch.door
+    entity_id: switch.door_lock
     service: switch.turn_on
 
-- alias: Update door off
+- alias: "Update door lock off"
   trigger:
     platform: numeric_state
-    entity_id: sensor.door
+    entity_id: sensor.door_lock_state
     below: 1
   action:
-    entity_id: switch.door
+    entity_id: switch.door_lock
     service: switch.turn_off
 
-hello_world:
-
+your_project:

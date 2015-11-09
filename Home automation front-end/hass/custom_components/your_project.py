@@ -9,7 +9,7 @@ hello_world:
 """
 
 # The domain of your component. Should be equal to the name of your component
-DOMAIN = "hello_world"
+DOMAIN = "your_project"
 
 # List of component names (string) your component depends upon
 DEPENDENCIES = []
@@ -19,7 +19,7 @@ def setup(hass, config):
     """ Setup our skeleton component. """
 
     # States are in the format DOMAIN.OBJECT_ID
-    hass.states.set('hello_world.Hello_World', 'Works!')
+    hass.states.set('your_project.Your_Project', 'Your project goes here!')
 
     # return boolean to indicate that initialization was successful
     return True
