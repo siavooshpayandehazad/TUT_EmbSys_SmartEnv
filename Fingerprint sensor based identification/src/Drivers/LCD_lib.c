@@ -1,6 +1,6 @@
+#include <LCD_lib.h>
 #include <msp430.h>
 #include <string.h>
-#include "i2c_1602_lib.h"
 
 #define LED_ON
 #define LED_OFF

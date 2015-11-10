@@ -1,22 +1,32 @@
-/***************************************************************************************************
- *	main.c  - Template for the MSP430 Launchpad project   								   		   *
- ***************************************************************************************************/
-
+/*
+ * main.h
+ *
+ *  Created  on: 06.02.2015
+ *  Author: Mairo Leier, Maksim Gorev
+ *
+ *  Version: 0.3		15.10.2015
+ */
 /***************************************************************************************************
  *	        Include section					                       		   					       *
  ***************************************************************************************************/
-#include <msp430.h>
-#include <stdlib.h>
 #include "MSP_FPS_GT511C3.hpp"
-#include "uartCustom.h"
 #include <stdio.h>
 
 extern "C" {
-#include "i2c_1602_lib.h"
+	#include "system.h"
+	#include "network.h"
+	#include "general.h"
+
+	// Drivers
+	#include "uart.h"
+	#include "spi.h"
+	#include "radio.h"
+	#include "LCD_lib.h"
+
+	// Network
+	#include "nwk_security.h"
+	#include "nwk_radio.h"
 }
-
-
-
 
 /***************************************************************************************************
  *	        Define section					                       		   					       *
@@ -31,52 +41,28 @@ extern "C" {
 /***************************************************************************************************
  *	        Global Variable section  				                            				   *
  ***************************************************************************************************/
+uint8 exit_code = 0;		// Exit code number that is set after function exits
+uint8 payload_length;
+uint8 cntr;
 
 
 /***************************************************************************************************
  *         Main section                                                                            *
  ***************************************************************************************************/
-
-int main(void)
-{
-	volatile unsigned int i;
-	int fingerNumber = 0;
+void main(void) {
+	int fingerNumber = 0, i;
+	uint8 cntr, len, var;
+	uint8 rssi_env, rssi_rx;
 	char bufferFingerNumber[50];
 
-	WDTCTL = WDTPW+WDTHOLD;                   // Stop WDT
-	P1DIR |= BIT0 + BIT6;                            // P1.0 set as output                     // For debugger
-	P1OUT &= ~BIT6;						//for debug
-
-	/* Configuration CPU Clock */
-
-	if (CALBC1_1MHZ==0xFF)		    // If calibration constant erased
+	if((fingerNumber = System_Init()) == EXIT_NO_ERROR)
+		lcdword("Starting ...");
+	else
 	{
-		while(1);                   // do not load, trap CPU
+		lcdword("Init failed !");
+		lcdcursor(0,1);
+		sprintf(bufferFingerNumber,"%d",fingerNumber);
 	}
-	DCOCTL = 0;
-	BCSCTL1 = CALBC1_1MHZ; 			// Set DCO = 1MHz
-	DCOCTL = CALDCO_1MHZ;
-
-	/* Configuration I2C */
-
-	UCB0CTL1 |= UCSWRST; 						// Enable SW reset
-	UCB0CTL0 = UCMST + UCMODE_3 + UCSYNC; 	// I2C Master, synchronous mode
-	UCB0CTL1 = UCSSEL_2 + UCSWRST; 			// Use SMCLK, keep SW reset
-	UCB0BR0 = 10; 							// fSCL = 1Mhz/10 = ~100kHz
-	UCB0BR1 = 0;
-	UCB0I2CSA = 0x20; 						// I2C Adress for PCF8574T
-	UCB0CTL1 &= ~UCSWRST; 					// **Initialize USCI state machine**
-
-
-	UartInit(); // Initialize Debug Serial on pins P4.4, P4.5
-
-	__bis_SR_register(GIE);       // Enter LPM0, interrupts enabled
-	// __no_operation();
-
-
-	initLCD();
-	lcdcursor(0,0);
-	lcdword("Starting ...");
 
 	FPS_GT511C3 fps(1, 2);
 	fps.UseSerialDebug = false;
@@ -88,7 +74,7 @@ int main(void)
 	lcdcursor(0,0);
 	lcdword("Waiting for");
 	lcdcursor(0,1);
-	lcdword("finger");
+	lcdword("finger   ");
 
 	while(1)
 	{
@@ -114,22 +100,49 @@ int main(void)
 		}
 		else
 		{
+			lcdclear();
 			lcdcursor(0,0);
-			lcdword("Waiting ...   ");
-			lcdcursor(0,1);
-			lcdword("   ");
+			lcdword("Waiting ...");
 			P1OUT |= BIT0;
-			for(i=50000;i>0;i--);                   // Delay
+			__delay_cycles(50000);
 			P1OUT &= ~BIT0;
-			for(i=50000;i>0;i--);					// Delay
+			__delay_cycles(50000);
+
+			if (exit_code = Radio_Receive_Data(RxPacket, &len, 100, &rssi_rx)) {
+
+			} else {
+				lcdclear();
+				lcdcursor(0,0);
+				lcdword("Msg received");
+
+				lcdclear();
+				lcdcursor(0,0);
+				lcdword("Sending !");
+
+				payload_length = 0;
+
+				// Clear Tx packet buffer
+				cntr = 0;
+				for (cntr=RF_BUFFER_SIZE; cntr > 0; cntr--)
+					TxPacket[cntr] = 0;
+
+				// Construct the packet
+				// This is the place where you can put your own data to send
+				TxPacket[payload_length++] = PKT_CTRL | PKT_CTRL_REQUEST;
+				TxPacket[payload_length++] = PKT_TYPE_VOLTAGE;
+				TxPacket[payload_length++] = 0x12;
+				TxPacket[payload_length++] = 0x07;
+
+				/* NWK level data sending */
+				Radio_Send_Data(TxPacket, payload_length, ADDR_REMOTE, PAYLOAD_ENC_ON, PCKT_ACK_ON);
+
+				Radio_Set_Mode(RADIO_RX);
+
+				// Clear received packet buffer
+				for (var = RF_BUFFER_SIZE-1; var > 0; var--)
+					RxPacket[var] = 0;
+			}
 		}
 	}
-}
+}		/* END: main */
 
-
-// *************************************************************************************************
-// @fn          ExampleFunction
-// @brief       Give an answer depeding on number of ticks
-// @param       ticks
-// @return      x
-// *************************************************************************************************

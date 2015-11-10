@@ -7,8 +7,11 @@
 */
 
 #include "MSP_FPS_GT511C3.hpp"
-#include "uartCustom.h"
 #include <stdio.h>
+
+extern "C"{
+#include "uart.h"
+}
 
 uint16_t ByteCount;
 uint8_t rx_buf[RXBUF_SIZE];
@@ -189,17 +192,6 @@ unsigned char Response_Packet::GetLowByte(unsigned long int w)
 bool Response_Packet::CheckParsing(unsigned char b, unsigned char propervalue, unsigned char alternatevalue, char* varname, bool UseSerialDebug)
 {
 	bool retval = (b != propervalue) && (b != alternatevalue);
-	if ((UseSerialDebug) && (retval))
-	{
-		UartSendString("Response_Packet parsing error ");
-		UartSendString(varname);
-		UartSendString(" ");
-		UartSendByte(propervalue);
-		UartSendString(" || ");
-		UartSendByte(alternatevalue);
-		UartSendString(" != ");
-		UartSendByte(b);
-	}
 	return retval;
 }
 
@@ -227,7 +219,6 @@ FPS_GT511C3::~FPS_GT511C3()
 //Initialises the device and gets ready for commands
 void FPS_GT511C3::Open()
 {
-	if (UseSerialDebug) UartSendString("FPS - Open");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Open;
 	cp->Parameter[0] = 0x00;
@@ -245,7 +236,6 @@ void FPS_GT511C3::Open()
 // Implemented it for completeness.
 void FPS_GT511C3::Close()
 {
-	if (UseSerialDebug) UartSendString("FPS - Close");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Close;
 	cp->Parameter[0] = 0x00;
@@ -268,12 +258,10 @@ bool FPS_GT511C3::SetLED(bool on)
 	cp->Command = Command_Packet::Commands::CmosLed;
 	if (on)
 	{
-		if (UseSerialDebug) UartSendString("FPS - LED on");
 		cp->Parameter[0] = 0x01;
 	}
 	else
 	{
-		if (UseSerialDebug) UartSendString("FPS - LED off");
 		cp->Parameter[0] = 0x00;
 	}
 	cp->Parameter[1] = 0x00;
@@ -299,7 +287,6 @@ bool FPS_GT511C3::ChangeBaudRate(int baud)
 	if ((baud == 9600) || (baud == 19200) || (baud == 38400) || (baud == 57600) || (baud == 115200))
 	{
 
-		if (UseSerialDebug) UartSendString("FPS - ChangeBaudRate");
 		Command_Packet* cp = new Command_Packet();
 		cp->Command = Command_Packet::Commands::Open;
 		cp->ParameterFromInt(baud);
@@ -323,7 +310,6 @@ bool FPS_GT511C3::ChangeBaudRate(int baud)
 // Return: The total number of enrolled fingerprints
 int FPS_GT511C3::GetEnrollCount()
 {
-	if (UseSerialDebug) UartSendString("FPS - GetEnrolledCount");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::GetEnrollCount;
 	cp->Parameter[0] = 0x00;
@@ -345,7 +331,6 @@ int FPS_GT511C3::GetEnrollCount()
 // Return: True if the ID number is enrolled, false if not
 bool FPS_GT511C3::CheckEnrolled(int id)
 {
-	if (UseSerialDebug) UartSendString("FPS - CheckEnrolled");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::CheckEnrolled;
 	cp->ParameterFromInt(id);
@@ -369,7 +354,6 @@ bool FPS_GT511C3::CheckEnrolled(int id)
 //	3 - Position(ID) is already used
 int FPS_GT511C3::EnrollStart(int id)
 {
-	if (UseSerialDebug) UartSendString("FPS - EnrollStart");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::EnrollStart;
 	cp->ParameterFromInt(id);
@@ -397,7 +381,6 @@ int FPS_GT511C3::EnrollStart(int id)
 //	3 - ID in use
 int FPS_GT511C3::Enroll1()
 {
-	if (UseSerialDebug) UartSendString("FPS - Enroll1");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Enroll1;
 	unsigned char* packetbytes = cp->GetPacketBytes();
@@ -424,7 +407,6 @@ int FPS_GT511C3::Enroll1()
 //	3 - ID in use
 int FPS_GT511C3::Enroll2()
 {
-	if (UseSerialDebug) UartSendString("FPS - Enroll2");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Enroll2;
 	unsigned char* packetbytes = cp->GetPacketBytes();
@@ -452,7 +434,6 @@ int FPS_GT511C3::Enroll2()
 //	3 - ID in use
 int FPS_GT511C3::Enroll3()
 {
-	if (UseSerialDebug) UartSendString("FPS - Enroll3");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Enroll3;
 	unsigned char* packetbytes = cp->GetPacketBytes();
@@ -475,7 +456,6 @@ int FPS_GT511C3::Enroll3()
 // Return: true if finger pressed, false if not
 bool FPS_GT511C3::IsPressFinger()
 {
-	if (UseSerialDebug) UartSendString("FPS - IsPressFinger");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::IsPressFinger;
 	unsigned char* packetbytes = cp->GetPacketBytes();
@@ -498,7 +478,6 @@ bool FPS_GT511C3::IsPressFinger()
 // Returns: true if successful, false if position invalid
 bool FPS_GT511C3::DeleteID(int id)
 {
-	if (UseSerialDebug) UartSendString("FPS - DeleteID");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::DeleteID;
 	cp->ParameterFromInt(id);
@@ -516,7 +495,6 @@ bool FPS_GT511C3::DeleteID(int id)
 // Returns: true if successful, false if db is empty
 bool FPS_GT511C3::DeleteAll()
 {
-	if (UseSerialDebug) UartSendString("FPS - DeleteAll");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::DeleteAll;
 	unsigned char* packetbytes = cp->GetPacketBytes();
@@ -538,7 +516,6 @@ bool FPS_GT511C3::DeleteAll()
 //	3 - Verified FALSE (not the correct finger)
 int FPS_GT511C3::Verify1_1(int id)
 {
-	if (UseSerialDebug) UartSendString("FPS - Verify1_1");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Verify1_1;
 	cp->ParameterFromInt(id);
@@ -564,7 +541,6 @@ int FPS_GT511C3::Verify1_1(int id)
 //	200: Failed to find the fingerprint in the database
 int FPS_GT511C3::Identify1_N()
 {
-	if (UseSerialDebug) UartSendString("FPS - Identify1_N");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Identify1_N;
 	unsigned char* packetbytes = cp->GetPacketBytes();
@@ -584,7 +560,6 @@ int FPS_GT511C3::Identify1_N()
 // Returns: True if ok, false if no finger pressed
 bool FPS_GT511C3::CaptureFinger(bool highquality)
 {
-	if (UseSerialDebug) UartSendString("FPS - CaptureFinger");
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::CaptureFinger;
 	if (highquality)
@@ -697,14 +672,7 @@ bool FPS_GT511C3::CaptureFinger(bool highquality)
 // Sends the command to the software serial channel
 void FPS_GT511C3::SendCommand(unsigned char cmd[], int length)
 {
-	//UartSendLen2(cmd, length);
 	UartSendLen(cmd, length);
-	if (UseSerialDebug)
-	{
-		UartSendString("FPS - SEND: ");
-		SendToSerial(cmd, length);
-		UartSendString("\n");
-	}
 };
 
 // Gets the response to the command from the software serial channel (and waits for it)
@@ -722,36 +690,5 @@ Response_Packet* FPS_GT511C3::GetResponse()
 	}
 
 	Response_Packet* rp = new Response_Packet(rx_buf, UseSerialDebug);
-
-	if (UseSerialDebug)
-	{
-		UartSendString("FPS - RECV: ");
-		SendToSerial(rp->RawBytes, 12);
-		UartSendString("\n");
-		UartSendString("\n");
-	}
 	return rp;
 };
-
-// sends the bye aray to the serial debugger in our hex format EX: "00 AF FF 10 00 13"
-void FPS_GT511C3::SendToSerial(unsigned char data[], int length)
-{
-  bool first=true;
-  UartSendString("\"");
-  for(unsigned int i=0; i<length; i++)
-  {
-    if (first) first=false; else UartSendString(" ");
-    serialPrintHex(data[i]);
-  }
-  UartSendString("\"");
-}
-
-// sends a unsigned char to the serial debugger in the hex format we want EX "0F"
-void FPS_GT511C3::serialPrintHex(unsigned char data)
-{
-  char tmp[16];
-  sprintf(tmp, "%.2X",data);
-  UartSendString(tmp);
-}
-
-
