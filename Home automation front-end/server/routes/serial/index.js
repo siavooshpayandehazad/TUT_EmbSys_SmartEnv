@@ -1,6 +1,6 @@
 'use strict';
 
-var Router = require('../lib/router.js');
+var Router = require('../../lib/router.js');
 
 module.exports = function (opts) {
     var router = new Router(opts);

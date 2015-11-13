@@ -2,51 +2,39 @@
 
 var bunyan = require('bunyan');
 var config = require('easy-config');
-var SerialPort = require('serialport').SerialPort;
 
 var FileBuffer = require('./lib/file-buffer');
+var serial = require('./lib/serial');
 
 var log = bunyan.createLogger(config.log);
 
-var router = require('./routes')({
-    id: 'main',
+
+// Router for incoming packets from serial
+var serialRouter = require('./routes/serial')({
+    id: 'serial',
     log: log
 });
 
+serial.init({
+    config: config,
+    log: log,
+    listener: function (data) {
+        log.info({data: data}, 'Incoming packet');
 
-var serial;
-/**
- * Listen incoming packets from serial
- */
-function listenSerial() {
-    serial = new SerialPort(config.serial.device, config.serial.options);
-
-    serial.on('open', function () {
-
-        log.info({config: config.serial}, 'Serial port opened');
-
-        // TODO: flush callback
-        serial.flush();
-
-        // Packet being received
-        var receivePacket = [];
-
-        serial.on('data', function(data) {
-            log.info({data: data}, 'Incoming packet');
-
-            router.request(data, function (err) {
-
-            });
+        serialRouter.request(data, function (err) {
+            if (err) {
+                log.error({error: err, packetData: data}, 'Failed to process packet from serial');
+            }
         });
-    });
+    }
+});
 
-    serial.on('error', function (err) {
-        log.error({error: err, config: config.serial}, 'Failed to open serial port');
-    });
-}
 
-listenSerial();
-
+// Router for incoming data from Home Assistant frontend
+var hassRouter = require('./routes/hass')({
+    id: 'hass',
+    log: log
+});
 
 /**
  * Listen commands from Home Assistant front-end
@@ -59,28 +47,14 @@ function listenHass() {
     });
 
     dataFromHass.on('data', function (data) {
-        log.info({data: data}, 'Got command from hass');
+        log.info({data: data}, 'Incoming command from hass');
 
         // TODO: use similar router as for serial packets
-
-        var target = data.substr(0, 2);
-        var command = data[2];
-        var value = (data[3] === '1' ? 1 : 0);
-
-        if (target !== '02' || command !== 'L') {
-            return;
-        }
-
-        log.debug({value: value}, 'Setting lock');
-
-        serial.write([2, 2, 4, 0, 0, 'L'.charCodeAt(0), value], function (err) {
+        hassRouter.request(data, function (err) {
             if (err) {
-                log.error({error: err}, 'Failed to write to serial');
-                return;
+                log.error({error: err, packetData: data}, 'Failed to process packet from serial');
             }
-
-            log.debug('Data successfully written to serial');
-        })
+        });
 
     });
 }

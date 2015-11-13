@@ -1,9 +1,9 @@
 'use strict';
 
-var Router = require('../lib/router');
+var Router = require('../../lib/router');
 var middleware = require('./middleware');
 
-var db = require('../lib/db')();
+var db = require('../../lib/db')();
 var RfidCard = db.models.RfidCard;
 
 module.exports = function (parent) {
@@ -17,16 +17,12 @@ module.exports = function (parent) {
         log.info({route: 'C', data: packet.data}, 'Handling RFID card');
 
         // TODO: handling
-
-        next();
     });
 
     router.route('S', function (packet, next) {
         log.info({route: 'S', data: packet.data}, 'Packet routed');
 
         // TODO: handling
-
-        next();
     });
 
     return router;

@@ -11,6 +11,7 @@ function FileBuffer(opts) {
         throw TypeError('Failed to initialize FileBuffer: opts.filename must be specified');
     }
 
+    // TODO: create file if not exists
     this._filename = opts.filename;
     this._handlers = {
         data: []

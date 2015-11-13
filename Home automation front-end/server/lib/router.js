@@ -1,5 +1,7 @@
 'use strict';
 
+var extend = require('extend');
+
 /**
  * Simple router to handle incoming data packets asynchronously.
  * @param opts
@@ -24,6 +26,7 @@ function Router(opts) {
 
     this._log = opts.log;
 
+    this._defaultHandler = null;
     this._handlers = {};
     this._middleware = [];
 }
@@ -48,12 +51,17 @@ Router.prototype.middleware = function middleware(fn) {
 };
 
 Router.prototype.route = function handler(route, handler) {
-    if (!(handler instanceof Router) && typeof handler !== 'function') {
+    if (isHandlerType(route)) {
+        handler = route;
+        route = null;
+    }
+
+    if (!isHandlerType(handler)) {
         throw new TypeError('Expecting route handler to be Router object or function');
     }
 
-    this._log.trace({id: this._id, route: route}, 'Adding route');
-    this._handlers[route] = handler;
+    this._log.trace({id: this._id, route: route || '_default'}, 'Adding route');
+    route ? this._handlers[route] = handler : this._defaultHandler = handler;
 };
 
 Router.prototype._invokeMiddleware = function _invokeMiddleware(req) {
@@ -71,22 +79,54 @@ Router.prototype._invoke = function _invoke(packet, next) {
     this._invokeMiddleware(packet);
 
     var handler = this._handlers[packet.route];
+    var usingDefault = false;
+    if (!handler) {
+        handler =  this._defaultHandler;
+        usingDefault = true;
+    }
 
     if (!handler) {
         this._log.warn({route: packet.route}, 'Route not found');
-        next(new Error('Route not found'));
+        next(getRouteNotFoundError());
         return;
     }
 
-    if (handler instanceof Router) {
-        setImmediate(handler._invoke.bind(handler, packet, next));
-        return;
+    var _this = this;
+
+    invokeHandler(handler, extend(true, {}, packet, beforeNext));
+
+    function beforeNext(err) {
+        if (err && err._routeNotFound && _this._defaultHandler && !usingDefault) {
+            invokeHandler(_this._defaultHandler, extend(true, {}, packet), next);
+            return;
+        }
+
+        next(err);
     }
 
-    if (typeof handler === 'function') {
+    function invokeHandler(handler, packet, next) {
+        if (handler instanceof Router) {
+            setImmediate(handler._invoke.bind(handler, packet, next));
+            return;
+        }
+
+        // Handler is function
         setImmediate(handler.bind(this, packet, next));
-        return;
     }
 };
 
 module.exports = Router;
+
+
+/* Helper functions */
+
+function isHandlerType(handler) {
+    return (handler instanceof Router) || (typeof handler === 'function');
+}
+
+
+function getRouteNotFoundError() {
+    var err = new Error('Route not found');
+    err._routeNotFound = true;
+    return err;
+}

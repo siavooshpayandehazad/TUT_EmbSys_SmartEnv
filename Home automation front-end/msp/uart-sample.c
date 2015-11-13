@@ -85,7 +85,8 @@ __interrupt void USCI0RX_ISR(void) {
   receivedPacket[receivePosition] = UCA0RXBUF;
 
   if (receivePosition == 0) {
-    receiveLength = receivedPacket[receivePosition] + headerSize;
+    receiveLength = receivedPacket[0] + headerSize;
+    receivedPacket[0] = totalSize - headerSize;
   }
 
   ++receivePosition;
@@ -113,7 +114,7 @@ __interrupt void Port_1(void) {
   P1OUT |= LED_R;
   P1IFG &= ~BTN;
 
-  uartSend(packet);
+  uartSend(receivedPacket);
 
   P1OUT ^= LED_R;
 }
