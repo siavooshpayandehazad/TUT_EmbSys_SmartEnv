@@ -34,5 +34,9 @@
     "user": "root",
     "pass": "",
     "db": "hafe"
+  },
+
+  "crypto": {
+    "key": "9nmn2oopmnlgzaor"
   }
 }

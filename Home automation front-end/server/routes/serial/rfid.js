@@ -4,7 +4,7 @@ var Router = require('../../lib/router');
 var middleware = require('./middleware');
 
 var db = require('../../lib/db')();
-var RfidCard = db.models.RfidCard;
+var AccessCard = db.models.AccessCard;
 
 module.exports = function (parent) {
     var log = parent._log;
@@ -16,7 +16,17 @@ module.exports = function (parent) {
     router.route('C', function (packet, next) {
         log.info({route: 'C', data: packet.data}, 'Handling RFID card');
 
-        // TODO: handling
+        // Take 10-byte code from buffer as hex.
+        var code = packet.data
+            .slice(1, 11)
+            .toString('hex');
+
+        AccessCard
+            .find({code: code})
+            .then(function (accessCard) {
+                console.log(accessCard.toJSON());
+                // TODO: unlock/lock
+            });
     });
 
     router.route('S', function (packet, next) {

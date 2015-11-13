@@ -11,7 +11,7 @@ var sequelize = new Sequelize(config.mysql.db, config.mysql.user, config.mysql.p
 
 
 var models = {
-    RfidCard: sequelize.import(__dirname + '/models/rfid-card.js')
+    AccessCard: sequelize.import(__dirname + '/models/access-card.js')
 };
 
 sequelize.sync();

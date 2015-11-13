@@ -49,7 +49,6 @@ function listenHass() {
     dataFromHass.on('data', function (data) {
         log.info({data: data}, 'Incoming command from hass');
 
-        // TODO: use similar router as for serial packets
         hassRouter.request(data, function (err) {
             if (err) {
                 log.error({error: err, packetData: data}, 'Failed to process packet from serial');
