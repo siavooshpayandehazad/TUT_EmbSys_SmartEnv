@@ -51,7 +51,8 @@
 /***************************************************************************************************
  *	        Global Variable section  				                            				   *
  ***************************************************************************************************/
-
+unsigned light;
+unsigned food;
 
 /***************************************************************************************************
  *         Main section                                                                            *
@@ -98,9 +99,6 @@ int lighting(int LightLevel){
 	while(ADC10CTL1 & BUSY);    	// Wait..i am converting...
 	light = ADC10MEM;                    // Read ADC memory
 	light = light / 3;
-
-	while (!(IFG2&UCA0TXIFG));      // Wait until TX buffer is ready
-	UCA0TXBUF = light;
 	
 	if(light < 130){
 		return 1;
@@ -120,8 +118,26 @@ int waterlevel()
 	}
 }
 
-void feedlevel(){
+int feedlevel(int FoodLevel){
 	
+	/*Init ADC*/
+	ADC10CTL0 = ADC10IE + ADC10SHT_3 + ADC10ON;
+	ADC10CTL1 = INCH_5 + ADC10DIV_3;
+
+	__delay_cycles(5000);       	// settle time 30ms
+
+	/*ADC conversion start*/
+	__delay_cycles(1000);           // Wait for reference to settle
+	ADC10CTL0 |= ENC + ADC10SC; 	// Sampling and conversion start
+	while(ADC10CTL1 & BUSY);    	// Wait..i am converting...
+	food = ADC10MEM;                    // Read ADC memory
+	
+	if(food > 20){
+		return 1;
+		}
+	else{
+		return 0;
+		}
 }
 
 void motor(){
