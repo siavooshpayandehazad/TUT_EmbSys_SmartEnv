@@ -1,0 +1,236 @@
+Version2.172364 CAUTION: Do not change the contents of this file. File corruption is probable!
+DebugData497128916
+SampleData34885000208455542084
+{
+   D0,D1,D2,D3,D4,D5,D6,D7,D8,D9,D10,D11,D12,D13,D14,D15,D16,D17,D18,D19,D20,D21,D22,D23,D24,D25,D26,D27,D28,D29,D30,D31,CLK1,CLK2,Count
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,50000000
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,2
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,24
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,124
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,5
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,16
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,3
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,46
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,5
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1814
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,22
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,0,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,0,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,3
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,120
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,9
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,11
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,6
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,43
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,10
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,41736
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,23
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,124
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,3667
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,2
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,25
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,3
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4360
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,2
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,24
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,7236
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,2
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,24
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,4
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,9546
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,0,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,3
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,51174929
+   U,U,1,1,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,U,1
+}
+ShowGraticuleTrue
+ShowTriggerTrue
+ShowCursorsTrue
+LastVisibleCursor3
+UnitsTimeTrue
+ColumnsVisibleTrue
+ScaleRelativeToReferenceTrue
+ScaleFactor0.02
+ReferenceOffset5540000
+ReferencePosition1
+StatesOnlyTrue
+CursorSnapTrue
+SaveOnAcqFalse
+SaveOnAcqAction0
+SaveOnAcqMaxFiles1
+SaveOnAcqHoldoff0
+USB_ErrorCount0
+InvertedChannelListFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalse
+ExportFormat2
+ExportRadix1
+ExportFile
+CursorOffsetSamples-150-151612582115
+CursorOffsetTime-0.0000015-0.000000150.000000160.000001250.0000008250.000001155
+CursorInterlock-1-1-1-1-1-1
+ControlSelections0324-1-1-1-1-1-1-1-1
+ControlValues1515501.532323233
+SignalsRandom0Random1Tx FPSRx FPSRandom4Random5Random6Random7Random8Random9Random10Counter0Counter1Counter2Counter3Counter4Counter5Counter6Counter7Counter8Counter9Counter10Sine0Sine1Sine2Sine3Sine4Sine5Sine6Sine7Sine8Sine9Clock1Clock2
+GroupRANDOM-GROUP111-1True0,1,2,3,4,5,6,7,8,9,10False1-1
+GroupAll Signals121-1True0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33False2-1
+GroupSINE_GROUP[9..0]12-1-1True2False1-1
+GroupCOUNTER121-1True16,17,18,19False0-1
+GroupSerial Rx FPS1214True3False028False009600True02False00
+Group
+GroupSerial1211True2False028False009600True02False00
+Row6False-1285-1False2True-1
+Row2False12851False1False-1
+Row2False-12851False1True-1
+Row4False-1285-1False2True-1
+Row3False42851False1False-1
+Row3False-12851False1True-1
+Column40650 
+Column50650 
+Column20650 
+Column306500
+Pattern01000000000000000000000000000000000
+Pattern11111122222000000000000000000000000
+Edge00003000000000000000000000000000010
+Edge10000000000000000000000000000000010
+IsDemoDataFalse
+AcquiredSampleMode1
+AcquiredSamplePeriod0.00000001
+AcquiredChannelListFalseFalseTrueTrueFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalseFalse
+PrintCaptionTrue
+PrintDateTrue
+PrintMeasurementsTrue
+PrintCaptionType2
+PrintCaptionStringCaption
+CombineMode1
+PrequalifyFalseFalse
+EdgeTerm11
+EdgeCount11
+EdgeCountMode00
+PatternTerm00
+PatternMode02
+PatternCount22
+PatternCountMode00
+RangeTerm00
+RangeGroup23
+RangeMode04
+RangeLeft50h50h
+RangeRight60h100h
+DurationTerm00
+DurationMode33
+DurationLeft32.000E-6
+DurationRight66.000E-5
+DurationUnits10
+TimingModeTrue
+StateClockDelay1
+StateClockPolarity0
+StateClockSelect0
+StateClockRate1.000000E+7
+StateClockUnits1
+UseCompression1
+PrefillTimeout2
+PostfillTimeout2
+QualifyStateSamplingFalse
+QualifierPolarity1
+MeasurementType0235
+MeasurementLeftTerm0222
+MeasurementRightTerm1330
+NotesString/For examples of actual sampled data, please see the files in: 
+
+  <Install directory>\Projects\Examples
+
+*****************************************************************************
+
+The data included in this project file is simulated. 
+Note that if you are running the software in demo mode,
+you will get a variation of this data for each acquisition. 
+
+There are three different patterns in the data. Data values 
+for a sine, a ramp (counter), and a pseudo-random sequence 
+are all contained within the 34 simulated signals.
+
+The simulated data is provided so that you can experiment
+with LogicPort software features if you don't yet own a LogicPort.
+
+*****************************************************************************
+
+If you are familiar with the use of logic analyzers, we recommend 
+the Quickstart tutorial in the help file for a brief introduction to 
+LogicPort software features and setup.
+
+For more detailed instructions see the Step-by-Step Example 
+in the help file.
+
+*****************************************************************************
+
+A few quick tips:
+
+Signals can be displayed individually, or as part of a group (or both).
+A group can be expanded to show its members by double-clicking on 
+the group's name, or clicking on the "+" next to the name.
+
+You can scroll the waveforms horizontally by dragging them with the mouse.
+Place the cursor inside the waveform window, then hold the left mouse 
+button down while dragging the waveforms to a new location. You can also 
+use the scrollbar at the bottom of the display, or right-click inside the 
+waveform window for other options.
+
+You can set options such as the color for individual rows by right-clicking 
+in the waveform table to bring up a context-sensitive menu.
+
+Additional menus are available by right-clicking in different cells of the 
+top row of the waveform table.
+
+You can rearrange the waveform table by dragging the cells in the left 
+column or top row to move rows or columns respectively.
+
+When a group is shown as an analog waveform, you can resize the row
+by placing the cursor at the bottom of the cell containing the group name,
+then left-clicking and dragging up or down to the desired height./

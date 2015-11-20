@@ -26,3 +26,29 @@
 *.exe
 *.out
 *.app
+
+# Project
+*.ccsproject
+*.cproject
+*.project
+*.prefs
+Fingerprint sensor based identification/CCS/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+Fingerprint sensor based identification/CCS/.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap
+*.properties
+Fingerprint sensor based identification/CCS/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+*.snap
+*.log
+*.ini
+*.ccxml
+*.mark
+Fingerprint sensor based identification/CCS/.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/.indexes/properties.index
+*.xml
+Fingerprint sensor based identification/CCS/.metadata/.plugins/org.eclipse.cdt.make.core/specs.c
+*.pdom
+Fingerprint sensor based identification/CCS/.metadata/.plugins/com.ti.ccstudio.builddefinitions.generator/native/hex/TMS470_5.2.5.txt
+Fingerprint sensor based identification/CCS/.metadata/.plugins/org.eclipse.cdt.make.core/specs.cpp
+Fingerprint sensor based identification/CCS/.metadata/.plugins/com.ti.ccstudio.builddefinitions.generator/native/hex/MSP430_4.4.5.txt
+*.lock
+Fingerprint sensor based identification/CCS/.metadata/.plugins/com.ti.ccstudio.builddefinitions.generator/native/hex/MSP432_5.2.5.txt
+*.resources
+*.cmd
