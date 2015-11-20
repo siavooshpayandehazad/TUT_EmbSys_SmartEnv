@@ -6,6 +6,8 @@
  *
  *  Version: 0.3		15.10.2015
  */
+#define radioRx
+#define radioTx
 /***************************************************************************************************
  *	        Include section					                       		   					       *
  ***************************************************************************************************/
@@ -50,10 +52,9 @@ uint8 cntr;
  *         Main section                                                                            *
  ***************************************************************************************************/
 void main(void) {
-	int fingerNumber = 0, i;
-	uint8 cntr, len, var;
-	uint8 rssi_env, rssi_rx;
-	char bufferFingerNumber[50];
+	uint8 fingerNumber = 0, lastValidFinger = 0, i;
+	uint8 cntr, len, var, doorStatus = CLOSE;
+	char bufferFingerNumber[5];
 
 	if((fingerNumber = System_Init()) == EXIT_NO_ERROR)
 		lcdword("Starting ...");
@@ -64,7 +65,7 @@ void main(void) {
 		sprintf(bufferFingerNumber,"%d",fingerNumber);
 	}
 
-	FPS_GT511C3 fps(1, 2);
+	FPS_GT511C3 fps(4, 3);
 	fps.UseSerialDebug = false;
 	fps.Open();
 	if(fps.SetLED(true))
@@ -78,47 +79,25 @@ void main(void) {
 
 	while(1)
 	{
-		if(fps.IsPressFinger())                                  // continuous loop
+		if(fps.IsPressFinger())                                  //check if a finger is pressed because it can't be done with interrupts
 		{
 			fps.CaptureFinger(false);
 			fingerNumber = fps.Identify1_N();
 			sprintf(bufferFingerNumber,"%d",fingerNumber);
 
 			lcdclear();
+			//if a fingerprint has been found into the database
 			if(fingerNumber < 20)
 			{
+				//display the number
 				lcdcursor(0,0);
 				lcdword("Finger        ");
 				lcdcursor(0,1);
 				lcdword(bufferFingerNumber);
-			}
-			else
-			{
-				lcdcursor(0,0);
-				lcdword("Not found   ");
-			}
-		}
-		else
-		{
-			lcdclear();
-			lcdcursor(0,0);
-			lcdword("Waiting ...");
-			P1OUT |= BIT0;
-			__delay_cycles(50000);
-			P1OUT &= ~BIT0;
-			__delay_cycles(50000);
+				lastValidFinger = fingerNumber;
 
-			if (exit_code = Radio_Receive_Data(RxPacket, &len, 100, &rssi_rx)) {
-
-			} else {
-				lcdclear();
-				lcdcursor(0,0);
-				lcdword("Msg received");
-
-				lcdclear();
-				lcdcursor(0,0);
-				lcdword("Sending !");
-
+				#ifdef radioTx
+				//send tp the server the finger ID
 				payload_length = 0;
 
 				// Clear Tx packet buffer
@@ -130,19 +109,66 @@ void main(void) {
 				// This is the place where you can put your own data to send
 				TxPacket[payload_length++] = PKT_CTRL | PKT_CTRL_REQUEST;
 				TxPacket[payload_length++] = PKT_TYPE_VOLTAGE;
-				TxPacket[payload_length++] = 0x12;
-				TxPacket[payload_length++] = 0x07;
+				TxPacket[payload_length++] = 'S';
+				TxPacket[payload_length++] = lastValidFinger;
 
 				/* NWK level data sending */
-				Radio_Send_Data(TxPacket, payload_length, ADDR_REMOTE, PAYLOAD_ENC_ON, PCKT_ACK_ON);
+				lcdcursor(0,0);
+				lcdword("Sending ...  ");
+				i = 0;
+				while(!Radio_Send_Data(TxPacket, payload_length, ADDR_REMOTE, PAYLOAD_ENC_ON, PCKT_ACK_ON) || i < 5)
+					i++;
 
 				Radio_Set_Mode(RADIO_RX);
+				#endif
+			}
+			else
+			{
+				lcdcursor(0,0);
+				lcdword("Not found   ");
+			}
+		}
+		else
+		{
+			lcdcursor(0,0);
+			lcdword("Waiting ...  ");
+			lcdcursor(0,1);
+			lcdword("           ");
+			P1OUT |= BIT0;
+			__delay_cycles(50000);
+			P1OUT &= ~BIT0;
+			__delay_cycles(50000);
+
+			#ifdef radioRx
+			//Radio part
+			if (exit_code = Radio_Receive_Data(RxPacket, &len, 100, &rssi_rx)) {
+
+			} else {
+				lcdcursor(0,0);
+				lcdword("Msg received");
+
+				__delay_cycles(1000000*SYSTEM_SPEED_MHZ);
+
+				//check if msg received is the door status
+				if(RxPacket[5] == 'R')
+				{
+					doorStatus = RxPacket[6];
+
+					lcdcursor(0,0);
+					if(doorStatus)
+						lcdword("Door open  ");
+					else
+						lcdword("Door close  ");
+				}
 
 				// Clear received packet buffer
 				for (var = RF_BUFFER_SIZE-1; var > 0; var--)
-					RxPacket[var] = 0;
+						RxPacket[var] = 0;
+
+				// Set radio into RX mode
+				Radio_Set_Mode(RADIO_RX);
 			}
+			#endif
 		}
 	}
 }		/* END: main */
-

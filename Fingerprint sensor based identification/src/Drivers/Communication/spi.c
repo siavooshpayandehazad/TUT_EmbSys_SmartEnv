@@ -32,7 +32,6 @@ unsigned char dummy;
 void SPI_Init(void) {
 	// Configure SPI pins
 	SPI_SEL();
-	SPI_SEL2();
 	SPI_CLK_OUT();
 	SPI_MOSI_OUT();
 	SPI_MISO_IN();
@@ -50,7 +49,6 @@ void SPI_Init(void) {
 	UCB0BR0 |= SYSTEM_SPEED_MHZ;              				// Divider: SMCLK/SYS_SPEED = 1MHz
 	UCB0BR1 = 0;                              				//
 	UCB0CTL1 &= ~UCSWRST;                   				// **Initialize USCI state machine**
-	//IE2 |= 0;                          						// Disable USCI0 interrupts
 }
 
 
@@ -62,7 +60,7 @@ void SPI_Init(void) {
 // *************************************************************************************************
 unsigned char Spi_Send(const unsigned char _data) {
 	UCB0TXBUF = _data; 				// setting TXBUF clears the TXIFG flag
-	while (!(IFG2 & UCB0TXIFG));
+	while (!(UCB0IFG & UCTXIFG));
 	// Add some delay for MRF89XA
 	if (SYSTEM_SPEED_MHZ > SYSTEM_SPEED_1MHZ)
 		__delay_cycles(120);			// Minimum req. delay for MRF89 module is 100 cycles

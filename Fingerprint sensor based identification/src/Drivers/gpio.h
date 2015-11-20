@@ -1,12 +1,5 @@
-/*
- * gpio.h
- *
- *  Created on: 06.04.2015
- *      Author: mairo
- */
-
-#ifndef DRIVERS_GPIO_H_
-#define DRIVERS_GPIO_H_
+#ifndef FINGERPRINTSENSORRADIO_DRIVERS_GPIO_H_
+#define FINGERPRINTSENSORRADIO_DRIVERS_GPIO_H_
 
 /***************************************************************************************************
  *	        Include section					                       		   					       *
@@ -26,11 +19,26 @@
 #define RF_IRQ_PORT_IFG		(P2IFG)
 
 #define RF_IRQ0_PIN			BIT0	// P2.0
-#define RF_IRQ1_PIN			BIT1	// P2.1
+#define RF_IRQ1_PIN			BIT2	// P2.2
 
 #define RF_RESET_PORT_DIR	(P2DIR)
 #define RF_RESET_PORT_OUT	(P2OUT)
-#define RF_RESET_PIN		BIT3	// P2.3
+#define RF_RESET_PIN		BIT5	// P2.5
+
+
+/********* SPI ************/
+#define SPI_PORT_DIR      	(P3DIR)
+#define SPI_PORT_SEL       	(P3SEL)
+#define SPI_PORT_OUT       	(P3OUT)
+
+#define SPI_CS_PORT_DIR     (P1DIR)
+#define SPI_CS_PORT_OUT     (P1OUT)
+
+#define SPI_MISO_PIN       	BIT1	// P3.1
+#define SPI_MOSI_PIN       	BIT0	// P3.0
+#define SPI_CLK_PIN        	BIT2	// P3.2
+#define SPI_CS_DATA_PIN    	BIT3	// P1.3
+#define SPI_CS_CONF_PIN    	BIT4	// P1.4 chip select
 
 
 /********** LED ***********/
@@ -41,26 +49,28 @@
 //#define LED2       		BIT6	// P1.6 (GREEN); used by SPI
 
 
-/********* SPI ************/
-#define SPI_PORT_DIR      	(P1DIR)
-#define SPI_PORT_SEL       	(P1SEL)
-#define SPI_PORT_SEL2       (P1SEL2)
-#define SPI_PORT_OUT       	(P1OUT)
-
-#define SPI_MISO_PIN       	BIT6	// P1.6
-#define SPI_MOSI_PIN       	BIT7	// P1.7
-#define SPI_CLK_PIN        	BIT5	// P1.5
-#define SPI_CS_DATA_PIN    	BIT3	// P1.3
-#define SPI_CS_CONF_PIN    	BIT4	// P1.4
-
-
 /******** UART *************/
-#define UART_PORT_DIR		(P1DIR)
-#define UART_PORT_SEL      	(P1SEL)
-#define UART_PORT_SEL2      (P1SEL2)
+#define UART_PORT_DIR		(P3DIR)
+#define UART_PORT_SEL      	(P3SEL)
 
-#define UART_RXD			BIT1	// P1.1
-#define UART_TXD			BIT2	// P1.2
+#define UART_RXD			BIT4	// P3.4
+#define UART_TXD			BIT3	// P3.3
+
+
+/******** I2C *************/
+#define I2C_1602_SCL_PORT_OUT 	P7OUT
+#define I2C_1602_SCL_PORT_DIR 	P7DIR
+#define I2C_1602_SDA_PORT_OUT 	P7OUT
+#define I2C_1602_SDA_PORT_DIR 	P7DIR
+#define I2C_1602_SDA_PORT_REN 	P7REN
+#define I2C_1602_SDA_PORT_IN 	P7IN
+#define I2C_1602_SCL_PIN 		4
+#define I2C_1602_SDA_PIN 		0
+
+/******** FPS *************/
+#define	FPS_DIR		P8DIR
+#define FPS_OUT		P8OUT
+#define	FPS_PIN		BIT1	// P8.1
 
 
 /***************************************************************************************************
@@ -72,4 +82,4 @@
  *	        Global Variable section  				                            				   *
  ***************************************************************************************************/
 
-#endif 
+#endif

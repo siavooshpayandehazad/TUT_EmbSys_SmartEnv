@@ -2,6 +2,7 @@
  *	        Include section					                       		   					       *
  ***************************************************************************************************/
 #include "uart.h"
+#include "radio.h"
 
 /***************************************************************************************************
  *	        Define section					                       		   					       *
@@ -37,8 +38,7 @@ unsigned char  UartRxThreshReached = 0;
 // *************************************************************************************************
 void UART_Init(void) {
 	// Define UART ports
-	UART_PORT_SEL |= UART_RXD + UART_TXD;   		// P1.1 = RXD, P1.2=TXD
-	UART_PORT_SEL2 |= UART_RXD + UART_TXD;     	// P1.1 = RXD, P1.2=TXD
+	UART_PORT_SEL |= UART_RXD + UART_TXD;   	// P1.1 = RXD, P1.2=TXD
 
 	// Configure UART
 	UCA0CTL1 |= UCSSEL_2;                   	// SMCLK
@@ -48,7 +48,7 @@ void UART_Init(void) {
 	UCA0BR1 = 0;                            // 1MHz 9600
 	UCA0CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
 
-	IE2 |= UCA0RXIE;                          	// Enable USCI_A0 RX interrupt
+	UCA0IE |= UCRXIE;                        // Enable USCI_A0 RX interrupt
 }
 
 
@@ -60,7 +60,7 @@ void UART_Init(void) {
 // @return      none
 // *************************************************************************************************
 void UART_Send_Byte(unsigned char c) {
-	while(!(IFG2 & UCA0TXIFG));
+	while(!(UCA0IFG & UCTXIFG));
 	UCA0TXBUF = c;
 	while(UCA0STAT & UCBUSY);                 // Wait until the last byte is completely sent
 	_NOP();
@@ -89,7 +89,7 @@ void UartSendLen(unsigned char * buf, unsigned char len)
         UCA0TXBUF = *(buf+(i++));
 
         // Wait until each bit has been clocked out...
-        while(!(UCA0TXIFG==(UCA0TXIFG & IFG2))&&((UCA0STAT & UCBUSY)==UCBUSY));
+        while(!(UCTXIFG==(UCTXIFG & UCA0IFG))&&((UCA0STAT & UCBUSY)==UCBUSY));
     }
 }
 
@@ -100,10 +100,9 @@ unsigned int UartReceiveBytesInBuffer(unsigned char* buf)
 {
     unsigned int i, count;
     while(UartRcvBufIndex != 12);//wait for all data to be received
-    //__delay_cycles(20000);
 
     // Hold off ints for incoming data during the copy
-    IE2 &= ~UCA0RXIE;
+    UCA0IE &= ~UCRXIE;
 
     //get the buffer stored duing interrupts
     for(i=0; i<UartRcvBufIndex; i++)
@@ -120,16 +119,18 @@ unsigned int UartReceiveBytesInBuffer(unsigned char* buf)
     UartRxThreshReached = 0;
 
     // Restore USCI interrupts, to resume receiving data.
-    IE2 |= UCA0RXIE;
+    UCA0IE |= UCRXIE;
 
     return count;
 }
 
 // The USCI_A0 receive interrupt service routine (ISR).  Executes every time a
 // byte is received on the back-channel UART.
-#pragma vector = USCIAB0RX_VECTOR
+#pragma vector = USCI_A0_VECTOR
 __interrupt void UartISR(void)
 {
+	P2IFG = 0;
+	P2IE = 0;
 	//synchronize data received --> it starts
 	if(UCA0RXBUF == 0x55)
 		UartRcvBufIndex = 0;
@@ -149,4 +150,6 @@ __interrupt void UartISR(void)
         UartRxThreshReached = 1;
         __bic_SR_register_on_exit(LPM3_bits);       // Exit LPM0-3
     }
+    /*RF_IRQ0_IE();
+    RF_IRQ1_IE();*/
 }

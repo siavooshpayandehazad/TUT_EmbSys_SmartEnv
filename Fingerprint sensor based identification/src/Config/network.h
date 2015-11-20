@@ -1,5 +1,5 @@
-#ifndef CONFIG_NETWORK_H_
-#define CONFIG_NETWORK_H_
+#ifndef FINGERPRINTSENSORRADIO_CONFIG_NETWORK_H_
+#define FINGERPRINTSENSORRADIO_CONFIG_NETWORK_H_
 
 /***************************************************************************************************
  *	        Include section					                       		   					       *
@@ -13,8 +13,8 @@
 #define NETWORK_ADDR4		0x01	// 0x01
 
 // Node address
-#define ADDR_LOCAL		0x10	// Local Node address
-#define ADDR_REMOTE		0x01	// Receiver address; recommended to set 0x01
+#define ADDR_LOCAL		0x01	// Local Node address
+#define ADDR_REMOTE		0x10	// Receiver address; recommended to set 0x01
 
 
 
@@ -62,4 +62,4 @@
  * 21		870 000 kHz */
 #define RF_CHANNEL		11
 
-#endif /* CONFIG_NETWORK_H_ */
+#endif /* FINGERPRINTSENSORRADIO_CONFIG_NETWORK_H_ */

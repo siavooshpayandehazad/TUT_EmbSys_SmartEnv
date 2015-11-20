@@ -1,15 +1,7 @@
 #ifndef I2C_1602_LIB_H
 #define I2C_1602_LIB_H
 
-//CHANGE FROM HERE
-#define I2C_1602_SCL_PORT_OUT P2OUT
-#define I2C_1602_SCL_PORT_DIR P2DIR
-#define I2C_1602_SDA_PORT_OUT P2OUT
-#define I2C_1602_SDA_PORT_DIR P2DIR
-#define I2C_1602_SDA_PORT_REN P2REN
-#define I2C_1602_SDA_PORT_IN P2IN
-#define I2C_1602_SCL_PIN 4
-#define I2C_1602_SDA_PIN 5
+#include "gpio.h"
 
 #define I2CLCD_DELAY 0 //you can make it smaller, but at one point LCD may start failing because you are going too fast. try.
 //DON'T CHANGE BELOW, STOP HERE

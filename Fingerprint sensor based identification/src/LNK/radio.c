@@ -75,10 +75,6 @@ uint8 Radio_Init(uint32 bps, uint8 power, uint8 channel) {
 	RF_IRQ0_IES();
 	RF_IRQ1_IES();
 
-	// Enable interrupt
-	RF_IRQ0_IE();
-	RF_IRQ1_IE();
-
 	// Clear pending interrupts
 	RF_IRQ0_IFG();
 	RF_IRQ1_IFG();

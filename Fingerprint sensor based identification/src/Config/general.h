@@ -1,5 +1,5 @@
-#ifndef CONFIG_GENERAL_H_
-#define CONFIG_GENERAL_H_
+#ifndef FINGERPRINTSENSORRADIO_CONFIG_GENERAL_H_
+#define FINGERPRINTSENSORRADIO_CONFIG_GENERAL_H_
 
 /***************************************************************************************************
  *	        Include section					                       		   					       *
@@ -13,6 +13,8 @@
 #define DEBUG				0		// Send all information to the UART
 #define DEBUG_RF			0		// Send all RF related data to the UART
 #define DEBUG_ERR			0		// Send only error information to the UART
+#define CLOSE				0
+#define OPEN				0
 
 
 /********* SYSTEM **********/

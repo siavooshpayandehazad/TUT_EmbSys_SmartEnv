@@ -5,8 +5,8 @@
  *      Author: mairo
  */
 
-#ifndef NWK_NWK_SECURITY_H_
-#define NWK_NWK_SECURITY_H_
+#ifndef FINGERPRINTSENSORRADIO_NWK_NWK_SECURITY_H_
+#define FINGERPRINTSENSORRADIO_NWK_NWK_SECURITY_H_
 
 /***************************************************************************************************
  *	        Include section					                       		   					       *

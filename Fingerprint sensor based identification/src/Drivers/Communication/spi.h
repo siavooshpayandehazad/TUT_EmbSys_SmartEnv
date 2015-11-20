@@ -9,18 +9,17 @@
  ***************************************************************************************************/
 
 #define SPI_SEL()      		{ SPI_PORT_SEL  |=  SPI_MISO_PIN | SPI_MOSI_PIN | SPI_CLK_PIN; }
-#define SPI_SEL2()     		{ SPI_PORT_SEL2 |=  SPI_MISO_PIN | SPI_MOSI_PIN | SPI_CLK_PIN; }
 #define SPI_CLK_OUT()  		{ SPI_PORT_DIR  |=  SPI_CLK_PIN; }
 #define SPI_MOSI_OUT() 		{ SPI_PORT_DIR  |=  SPI_MOSI_PIN; }
 #define SPI_MISO_IN()  		{ SPI_PORT_DIR  &= ~SPI_MISO_PIN; }
 
-#define SPI_CS_DATA_OUT()   { SPI_PORT_DIR |=  SPI_CS_DATA_PIN; }
-#define SPI_CS_DATA_HI()    { SPI_PORT_OUT |=  SPI_CS_DATA_PIN; }
-#define SPI_CS_DATA_LO()    { SPI_PORT_OUT &= ~SPI_CS_DATA_PIN; }
+#define SPI_CS_DATA_OUT()   { SPI_CS_PORT_DIR |=  SPI_CS_DATA_PIN; }
+#define SPI_CS_DATA_HI()    { SPI_CS_PORT_OUT |=  SPI_CS_DATA_PIN; }
+#define SPI_CS_DATA_LO()    { SPI_CS_PORT_OUT &= ~SPI_CS_DATA_PIN; }
 
-#define SPI_CS_CONF_OUT()   { SPI_PORT_DIR |=  SPI_CS_CONF_PIN; }
-#define SPI_CS_CONF_HI()    { SPI_PORT_OUT |=  SPI_CS_CONF_PIN; }
-#define SPI_CS_CONF_LO()    { SPI_PORT_OUT &= ~SPI_CS_CONF_PIN; }
+#define SPI_CS_CONF_OUT()   { SPI_CS_PORT_DIR |=  SPI_CS_CONF_PIN; }
+#define SPI_CS_CONF_HI()    { SPI_CS_PORT_OUT |=  SPI_CS_CONF_PIN; }
+#define SPI_CS_CONF_LO()    { SPI_CS_PORT_OUT &= ~SPI_CS_CONF_PIN; }
 
 #define SPI_READ_CMD           0x40  // Read command (first bit is high)
 #define SPI_WRITE_CMD          0x00  // Write command
