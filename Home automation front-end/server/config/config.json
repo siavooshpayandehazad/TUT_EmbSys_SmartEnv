@@ -38,5 +38,16 @@
 
   "crypto": {
     "key": "9nmn2oopmnlgzaor"
+  },
+
+  "modules": {
+    "_statusDir": "../hass/data/",
+    "rfid": {
+      "address": 2,
+      "statusFiles": {
+        "p2.lock": "bool",
+        "p2.status": "enum(ok,fault)"
+      }
+    }
   }
 }

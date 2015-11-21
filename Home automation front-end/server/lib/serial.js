@@ -2,6 +2,9 @@
 
 var SerialPort = require('serialport').SerialPort;
 
+var serial;
+var onOpenQueue = [];
+
 function Serial(opts) {
     if (!(this instanceof Serial)) {
         return new Serial(opts);
@@ -36,11 +39,11 @@ function Serial(opts) {
         _this._log.debug({device: _this._config.serial.device}, 'Serial port opened');
 
         _this._serial.flush();
-
-        // Packet being received
-        var receivePacket = [];
-
         _this._serial.on('data', _this._listener);
+
+        if (opts.onOpen) {
+            setImmediate(opts.onOpen);
+        }
     }
 
     function onError(err) {
@@ -86,6 +89,10 @@ Serial.prototype.write = function write(data, cb) {
     });
 };
 
+Serial.prototype.isOpen = function isOpen() {
+    return this._serial && this._serial.isOpen();
+};
+
 function bytesToInts(array) {
     if (!Array.isArray(array)) {
         throw TypeError('bytesToInts: argument must be an Array');
@@ -100,14 +107,27 @@ function bytesToInts(array) {
     });
 }
 
-var serial;
-
 module.exports = {
-    init: function (opts) {
+    init: function init(opts) {
+
+        if (onOpenQueue.length) {
+            var original = opts.onOpen;
+            opts.onOpen = function () {
+                onOpenQueue.forEach(function (fn) {
+                    setImmediate(fn);
+                });
+                onOpenQueue = [];
+
+                if (original) {
+                    original();
+                }
+            };
+        }
+
         serial = new Serial(opts);
         return serial;
     },
-    write: function (data, cb) {
+    write: function write(data, cb) {
         if (!serial) {
             if (cb) {
                 cb(new Error('Serial not initialized'));
@@ -117,5 +137,12 @@ module.exports = {
         }
 
         serial.write(data, cb);
+    },
+    onOpen: function onOpen(fn) {
+        if (serial && serial.isOpen()) {
+            setImmediate(fn);
+        } else {
+            onOpenQueue.push(fn);
+        }
     }
 };
