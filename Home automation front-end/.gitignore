@@ -1,0 +1,13 @@
+# Third-party modules, local test and conf files
+
+server/node_modules
+server/.idea
+
+hass/custom_components/__pycache__
+hass/home-assistant.db
+hass/home-assistant.log
+hass/lib/
+hass/data/*
+
+*.local
+*.local.*
