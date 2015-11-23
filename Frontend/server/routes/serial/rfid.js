@@ -188,20 +188,9 @@ module.exports = function (parent) {
         var locked = !!packet.data[3];
         var sysError = !!packet.data[4];
 
-        doorStatus.locked = locked;
-        doorStatus.error = sysError;
+        door.setLocked(locked);
+        door.setError(sysError);
 
-        statusFiles.update('p2.lock', locked, function (err) {
-            if (err) {
-                log.error({error: err, statusFile: 'p2.lock'}, 'Failed to update');
-            }
-        });
-
-        statusFiles.update('p2.status', sysError ? 'fault': 'ok', function (err) {
-            if (err) {
-                log.error({error: err, statusFile: 'p2.status'}, 'Failed to update');
-            }
-        });
     });
 
     return router;

@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('easy-config');
+
 var Router = require('../../lib/router.js');
 var serial = require('../../lib/serial.js');
 
@@ -15,6 +17,11 @@ module.exports = function (opts) {
                 var number = parseInt(part, 10);
                 return isNaN(number) ? part : number;
             });
+    });
+
+    router.route('DEBUG', function (packet, next) {
+        // Write raw data
+        serial.write(packet.data);
     });
 
     // Default router
