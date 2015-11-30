@@ -11,7 +11,7 @@ var ModuleStatus = require('../../lib/module-status');
 
 var statusFiles = ModuleStatus({
     dir: config.modules._statusDir,
-    files: config.modules.outdoor.statusFiles
+    files: config.modules.fishFeeder.statusFiles
 });
 
 
@@ -20,17 +20,17 @@ module.exports = function (parent) {
 
     serial.onOpen(function () {
 
-        var pollConf = config.modules.outdoor.poll;
+        var pollConf = config.modules.fishFeeder.poll;
 
         setTimeout(function () {
             serial.write({
-                to: config.modules.outdoor.address,
+                to: config.modules.fishFeeder.address,
                 data: ['D']
             });
 
             setInterval(function () {
                 serial.write({
-                    to: config.modules.outdoor.address,
+                    to: config.modules.fishFeeder.address,
                     data: ['D']
                 });
             }, pollConf.interval);
@@ -46,18 +46,18 @@ module.exports = function (parent) {
     router.route('S', function (packet, next) {
         log.info({route: 'S', data: packet.data}, 'Packet routed');
 
-        var temperature = packet.data.readInt8(1);
-        var humidity = packet.data[2];
-        var pressure = packet.data.readUInt16BE(3);
-        var light = packet.data[5];
-        var batteryLow = !!packet.data[6];
+        var lightOn = !!packet.data[1];
+        var waterLow = !!packet.data[2];
+        var feedLow = !!packet.data[3];
+        var temperature = packet.readInt8(4);
+        var filterCleaning = !!packet.data[5];
 
         statusFiles.updateMany({
-            'p3.temp': temperature,
-            'p3.humid': humidity,
-            'p3.pressure': pressure,
-            'p3.light': light,
-            'p3.battery': batteryLow ? 'low' : ok
+            'p3.light': lightOn ? 'on' : 'off',
+            'p3.water': waterLow ? 'low' : 'ok',
+            'p3.feed': feedLow ? 'low' : 'ok',
+            'p3.temperature': temperature,
+            'p3.filter': filterCleaning ? 'dirty' : 'ok'
         });
     });
 

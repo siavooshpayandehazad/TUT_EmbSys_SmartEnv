@@ -46,6 +46,7 @@
 
   "modules": {
     "_statusDir": "../hass/data/",
+
     "rfid": {
       "address": 2,
       "statusFiles": {
@@ -53,6 +54,7 @@
         "p2.status": "enum(ok,fault)"
       }
     },
+
     "outdoor": {
       "address": 3,
       "statusFiles": {
@@ -64,6 +66,21 @@
       },
       "poll": {
         "start": 1000,
+        "interval": 60000
+      }
+    },
+
+    "fishFeeder": {
+      "address": 5,
+      "statusFiles": {
+        "p5.light": "enum(on,off)",
+        "p5.water": "enum(ok,low)",
+        "p5.feed": "enum(ok,low)",
+        "p5.temp": "number",
+        "p5.filter": "enum(ok,dirty)"
+      },
+      "poll": {
+        "start": 1500,
         "interval": 60000
       }
     }
