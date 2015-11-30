@@ -46,6 +46,7 @@ function ModuleStatus(opts) {
     });
 }
 
+// TODO: named bool would be nice to use, instead of two-value enums
 ModuleStatus.types = ['bool', 'number', 'enum'];
 
 ModuleStatus.prototype.update = function update(name, value, cb) {

@@ -16,6 +16,7 @@ module.exports = function (opts) {
     router.route(2, require('./rfid')(router));
     router.route(3, require('./outdoor')(router));
     router.route(5, require('./fish-feeder')(router));
+    router.route(6, require('./flower-box')(router));
 
     return router;
 };

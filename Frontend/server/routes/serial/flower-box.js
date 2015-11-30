@@ -11,7 +11,7 @@ var ModuleStatus = require('../../lib/module-status');
 
 var statusFiles = ModuleStatus({
     dir: config.modules._statusDir,
-    files: config.modules.fishFeeder.statusFiles
+    files: config.modules.flowerBox.statusFiles
 });
 
 
@@ -20,17 +20,17 @@ module.exports = function (parent) {
 
     serial.onOpen(function () {
 
-        var pollConf = config.modules.fishFeeder.poll;
+        var pollConf = config.modules.flowerBox.poll;
 
         setTimeout(function () {
             serial.write({
-                to: config.modules.fishFeeder.address,
+                to: config.modules.flowerBox.address,
                 data: ['D']
             });
 
             setInterval(function () {
                 serial.write({
-                    to: config.modules.fishFeeder.address,
+                    to: config.modules.flowerBox.address,
                     data: ['D']
                 });
             }, pollConf.interval);
@@ -47,17 +47,15 @@ module.exports = function (parent) {
         log.info({route: 'S', data: packet.data}, 'Packet routed');
 
         var lightOn = !!packet.data[1];
-        var waterLow = !!packet.data[2];
-        var feedLow = !!packet.data[3];
-        var temperature = packet.readInt8(4);
-        var filterCleaning = !!packet.data[5];
+        var temperature = packet.readInt8(2);
+        var moisture = packet.data[3];
+        var humidity = packet.data[4];
 
         statusFiles.updateMany({
-            'p5.light': lightOn ? 'on' : 'off',
-            'p5.water': waterLow ? 'low' : 'ok',
-            'p5.feed': feedLow ? 'low' : 'ok',
-            'p5.temperature': temperature,
-            'p5.filter': filterCleaning ? 'dirty' : 'ok'
+            'p6.light': lightOn ? 'on' : 'off',
+            'p6.temperature': temperature,
+            'p6.moisture': moisture,
+            'p6.humidity': humidity
         });
     });
 

@@ -83,6 +83,20 @@
         "start": 1500,
         "interval": 60000
       }
+    },
+
+    "flowerBox": {
+      "address": 6,
+      "statusFiles": {
+        "p6.light": "enum(on,off)",
+        "p6.temp": "number",
+        "p6.moisture": "number",
+        "p6.humid": "number"
+      },
+      "poll": {
+        "start": 2000,
+        "interval": 60000
+      }
     }
   }
 }
