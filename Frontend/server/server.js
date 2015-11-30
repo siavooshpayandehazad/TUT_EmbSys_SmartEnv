@@ -6,7 +6,9 @@ var config = require('easy-config');
 var FileBuffer = require('./lib/file-buffer');
 var serial = require('./lib/serial');
 
-var log = bunyan.createLogger(config.log);
+var log = bunyan.createLogger(config.extend(config.log, {
+    serializers: bunyan.stdSerializers
+}));
 
 
 // Router for incoming packets from serial
@@ -23,7 +25,7 @@ serial.init({
 
         serialRouter.request(data, function (err) {
             if (err) {
-                log.error({error: err, packetData: data}, 'Failed to process packet from serial');
+                log.error({err: err, packetData: data}, 'Failed to process packet from serial');
             }
         });
     }
@@ -51,7 +53,7 @@ function listenHass() {
 
         hassRouter.request(data, function (err) {
             if (err) {
-                log.error({error: err, packetData: data}, 'Failed to process packet from serial');
+                log.error({err: err, packetData: data}, 'Failed to process packet from serial');
             }
         });
 

@@ -34,14 +34,14 @@ function Serial(opts) {
 
     function onOpen(err) {
         if (err) {
-            _this._log.error({error: err, config: _this._config.serial}, 'Failed to open serial port');
+            _this._log.error({err: err, config: _this._config.serial}, 'Failed to open serial port');
             return;
         }
 
         _this._log.debug({device: _this._config.serial.device}, 'Serial port opened');
 
         _this._serial.flush();
-        _this._serial.on('data', _this._listener);
+        _this._serial.on('data', onData);
 
         if (opts.onOpen) {
             setImmediate(opts.onOpen);
@@ -49,12 +49,71 @@ function Serial(opts) {
     }
 
     function onError(err) {
-        _this._log.error({error: err}, 'Serial error');
+        _this._log.error({err: err}, 'Serial error');
     }
 
     function onClose() {
         _this._log.warn('Serial closed. Trying to reopen');
         setTimeout(open, 1000);
+    }
+
+
+    var byteCount = 0;
+    var packetLength = undefined;
+    var packetData = new Buffer(0);
+    var timer = null;
+    var timeout = opts.config.serial.incoming.timeout;
+
+    function onData(data) {
+        _this._log.trace({data: data.inspect()}, 'Incoming data');
+
+        if (byteCount === 0) {
+            _this._log.trace('Packet start received');
+            // The whole packet must come in specified time frame
+            timer = setTimeout(resetPacket, timeout);
+
+            // First byte defines packet length
+            packetLength = data[0];
+        }
+
+        packetData = Buffer.concat([packetData, data]);
+        byteCount += data.length;
+
+        if (byteCount < packetLength) {
+            _this._log.trace({data: packetData.inspect()}, 'Partial packet');
+            // The whole packet not received yet
+            return;
+        }
+
+        // Packet received
+        clearTimeout(timer);
+
+        // Might be more data than one packet
+        while (byteCount && packetLength && byteCount >= packetLength) {
+
+            // Slice packet for listener
+            var currentPacket = packetData.slice(0, packetLength);
+            _this._log.trace({data: currentPacket.inspect()}, 'Packet received');
+            setImmediate(_this._listener, currentPacket);
+
+            // Reorganize remaining data
+            packetData = packetData.slice(packetLength);
+            byteCount = packetData.length;
+            packetLength = packetData[0];
+        }
+
+        if (byteCount > 0) {
+            _this._log.trace({data: packetData.inspect(), byteCount: byteCount, length: packetLength}, 'Next packet partially received');
+            // Some data remained. Assuming it belongs to next packet. Set timeout for next packet
+            timer = setTimeout(resetPacket, timeout);
+        }
+
+        function resetPacket() {
+            _this._log.error({timeout: timeout, data: packetData}, 'Incoming packet timeout');
+            packetData = new Buffer(0);
+            byteCount = 0;
+            packetLength = undefined;
+        }
     }
 }
 
@@ -63,19 +122,23 @@ Serial.prototype.write = function write(data, cb) {
 
     if (typeof data === 'object' && !Array.isArray(data)) {
         data = [
-            data.data.length,
-            data.to,
-            _this._config.rf.address,
-            0,
-            0
+            data.data.length + 2,
+            data.to
         ].concat(bytesToInts(data.data));
     } else if (Array.isArray(data)) {
         data = bytesToInts(data);
     }
 
+    if (!Array.isArray(data) || data.length < 3 || data.length > 18 || data[0] !== data.length) {
+        if (cb) {
+            cb(new TypeError('Invalid data'));
+        }
+        return;
+    }
+
     _this._serial.write(data, function (err) {
         if (err) {
-            _this._log.error({error: err, data: data}, 'Failed to write to serial');
+            _this._log.error({err: err, data: data}, 'Failed to write to serial');
 
             if (cb) {
                 cb(err);

@@ -16,12 +16,16 @@
       "baudrate": 9600,
       "dataBits": 8,
       "stopBits": 1,
-      "parity": "none",
-      "platformOptions": {
-        "vmin": 21
-      }
+      "parity": "none"
     },
-    "retry": 3000
+    "incoming": {
+      "timeout": 30
+    },
+    "outgoing": {
+      "timeout": 1000,
+      "retry": 3000,
+      "retryCount": 3
+    }
   },
 
   "hass": {

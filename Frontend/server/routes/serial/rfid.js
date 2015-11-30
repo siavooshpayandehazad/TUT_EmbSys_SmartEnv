@@ -51,7 +51,7 @@ Door.prototype.setLocked = function setLocked(locked) {
 
     _this._statusFiles.update('p2.lock', _this._locked, function (err) {
         if (err) {
-            _this._log('error', {error: err, statusFile: 'p2.lock'}, 'Failed to update');
+            _this._log('error', {err: err, statusFile: 'p2.lock'}, 'Failed to update');
         }
     });
 };
@@ -66,7 +66,7 @@ Door.prototype.setError = function setError(error) {
 
     _this._statusFiles.update('p2.status', _this._error ? 'fault': 'ok', function (err) {
         if (err) {
-            _this._log('error', {error: err, statusFile: 'p2.status'}, 'Failed to update');
+            _this._log('error', {err: err, statusFile: 'p2.status'}, 'Failed to update');
         }
     });
 };
@@ -114,7 +114,7 @@ module.exports = function (parent) {
             data: ['R']
         }, function (err) {
             if (err) {
-                log.error({error: err}, 'Failed to send status request to rfid component');
+                log.error({err: err}, 'Failed to send status request to rfid component');
                 // TODO: retry
                 // TODO: should be possible to check if 'S' packet actually arrived
                 return;
@@ -176,7 +176,7 @@ module.exports = function (parent) {
                 door.lockRequest(false, false, false);
             })
             .catch(function (err) {
-                log.error({error: err}, 'Failed to process rfid card');
+                log.error({err: err}, 'Failed to process rfid card');
             });
     });
 
