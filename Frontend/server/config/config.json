@@ -22,6 +22,7 @@
       "timeout": 30
     },
     "outgoing": {
+      "delay": 50,
       "timeout": 1000,
       "retry": 3000,
       "retryCount": 3
@@ -116,7 +117,18 @@
     },
 
     "indoorLighting": {
-      "address": 15
+      "address": 15,
+      "statusFiles": {
+        "p15.led1": "number",
+        "p15.led2": "number",
+        "p15.led3": "number",
+        "p15.led4": "number",
+        "p15.led5": "number",
+        "p15.led6": "number"
+      },
+      "poll": {
+        "start": 2500
+      }
     }
   }
 }

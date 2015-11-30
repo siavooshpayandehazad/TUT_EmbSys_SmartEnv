@@ -5,7 +5,6 @@ var SerialPort = require('serialport').SerialPort;
 var serial;
 var onOpenQueue = [];
 
-// TODO: send [length, to, payload max 16bytes]
 
 function Serial(opts) {
     if (!(this instanceof Serial)) {
@@ -16,6 +15,7 @@ function Serial(opts) {
     this._listener = opts.listener;
     this._config = opts.config;
     this._serial = null;
+    this._writeQueue = [];
 
     var _this = this;
 
@@ -117,8 +117,21 @@ function Serial(opts) {
     }
 }
 
-Serial.prototype.write = function write(data, cb) {
+Serial.prototype.write = function write(data, opts, cb) {
+    if (typeof opts === 'function') {
+        cb = opts;
+        opts = null;
+    }
+
     var _this = this;
+
+/*    if (opts && opts.checkResponse) {
+        // This is really bad logic for checking if we get a response. This should actually be handled on lower level
+
+        // TODO:
+        var timeout = checkResponse.timeout || 200;
+        var expectedResponse;
+    }*/
 
     if (typeof data === 'object' && !Array.isArray(data)) {
         data = [
@@ -136,7 +149,19 @@ Serial.prototype.write = function write(data, cb) {
         return;
     }
 
-    _this._serial.write(data, function (err) {
+
+    if (_this._writeDelayed) {
+        _this._writeQueue.push(_this._serial.write.bind(_this._serial, data, serialCb));
+        return;
+    }
+
+    _this._writeDelayed = true;
+    setTimeout(_this._executeWriteQueue.bind(_this), _this._config.serial.outgoing.delay);
+
+    _this._serial.write(data, serialCb);
+
+
+    function serialCb(err) {
         if (err) {
             _this._log.error({err: err, data: data}, 'Failed to write to serial');
 
@@ -151,11 +176,23 @@ Serial.prototype.write = function write(data, cb) {
         if (cb) {
             cb();
         }
-    });
+    }
 };
 
 Serial.prototype.isOpen = function isOpen() {
     return this._serial && this._serial.isOpen();
+};
+
+Serial.prototype._executeWriteQueue = function _executeWriteQueue() {
+    var _this = this;
+
+    if (!_this._writeQueue || !_this._writeQueue.length) {
+        _this._writeDelayed = false;
+        return;
+    }
+
+    _this._writeQueue.shift()();
+    setTimeout(_this._executeWriteQueue.bind(_this), _this._config.serial.outgoing.delay);
 };
 
 function bytesToInts(array) {
@@ -192,7 +229,7 @@ module.exports = {
         serial = new Serial(opts);
         return serial;
     },
-    write: function write(data, cb) {
+    write: function write(data, opts, cb) {
         if (!serial) {
             if (cb) {
                 cb(new Error('Serial not initialized'));
@@ -201,7 +238,7 @@ module.exports = {
             return;
         }
 
-        serial.write(data, cb);
+        serial.write(data, opts, cb);
     },
     onOpen: function onOpen(fn) {
         if (serial && serial.isOpen()) {

@@ -26,6 +26,7 @@ FileBuffer.prototype.init = function init() {
     // TODO: make it possible to stop watching
     // TODO: use promises
 
+    // TODO: when more than one line written, then data is read twice
     fs.watch(this._filename, function (event, filename) {
         if (event !== 'change') {
             return;
