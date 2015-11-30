@@ -5,6 +5,8 @@ var SerialPort = require('serialport').SerialPort;
 var serial;
 var onOpenQueue = [];
 
+// TODO: send [length, to, payload max 16bytes]
+
 function Serial(opts) {
     if (!(this instanceof Serial)) {
         return new Serial(opts);

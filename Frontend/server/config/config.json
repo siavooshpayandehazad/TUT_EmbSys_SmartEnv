@@ -48,6 +48,20 @@
         "p2.lock": "bool",
         "p2.status": "enum(ok,fault)"
       }
+    },
+    "outdoor": {
+      "address": 3,
+      "statusFiles": {
+        "p3.temp": "number",
+        "p3.humid": "number",
+        "p3.pressure": "number",
+        "p3.light": "number",
+        "p3.battery": "enum(ok,low)"
+      },
+      "poll": {
+        "start": 1000,
+        "interval": 60000
+      }
     }
   }
 }

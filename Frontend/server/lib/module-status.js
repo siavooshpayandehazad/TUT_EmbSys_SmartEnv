@@ -1,5 +1,6 @@
 'use strict';
 
+var async = require('async');
 var fs = require('fs');
 var path = require('path');
 
@@ -86,6 +87,18 @@ ModuleStatus.prototype.update = function update(name, value, cb) {
     value = value.toString();
 
     fs.writeFile(path.join(this._dir, name), value, {encoding: 'utf8'}, cb);
+};
+
+ModuleStatus.prototype.updateMany = function updateMany(map, cb) {
+    var _this = this;
+
+    async.each(Object.keys(map), function (key, cb) {
+        _this.update(key, map[key], cb);
+    }, function (err) {
+        if (cb) {
+            cb(err);
+        }
+    });
 };
 
 module.exports = ModuleStatus;
