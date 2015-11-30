@@ -1,0 +1,134 @@
+{
+  "name": "tut-home-automation-fe",
+
+  "log": {
+    "name": "hafe-server",
+    "level": "trace"
+  },
+
+  "rf": {
+    "address": 4
+  },
+
+  "serial": {
+    "device": "/dev/ttyACM0",
+    "options": {
+      "baudrate": 9600,
+      "dataBits": 8,
+      "stopBits": 1,
+      "parity": "none"
+    },
+    "incoming": {
+      "timeout": 30
+    },
+    "outgoing": {
+      "delay": 50,
+      "timeout": 1000,
+      "retry": 3000,
+      "retryCount": 3
+    }
+  },
+
+  "hass": {
+    "bufferFile": "data-from-hass.local"
+  },
+
+  "mysql": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "pass": "",
+    "db": "hafe"
+  },
+
+  "crypto": {
+    "key": "9nmn2oopmnlgzaor"
+  },
+
+  "modules": {
+    "_statusDir": "../hass/data/",
+
+    "fingerprint": {
+      "address": 1
+    },
+
+    "rfid": {
+      "address": 2,
+      "statusFiles": {
+        "p2.lock": "bool",
+        "p2.status": "enum(ok,fault)"
+      }
+    },
+
+    "outdoor": {
+      "address": 3,
+      "statusFiles": {
+        "p3.temp": "number",
+        "p3.humid": "number",
+        "p3.pressure": "number",
+        "p3.light": "number",
+        "p3.battery": "enum(ok,low)"
+      },
+      "poll": {
+        "start": 1000,
+        "interval": 60000
+      }
+    },
+
+    "fishFeeder": {
+      "address": 5,
+      "statusFiles": {
+        "p5.light": "enum(on,off)",
+        "p5.water": "enum(ok,low)",
+        "p5.feed": "enum(ok,low)",
+        "p5.temp": "number",
+        "p5.filter": "enum(ok,dirty)"
+      },
+      "poll": {
+        "start": 1500,
+        "interval": 60000
+      }
+    },
+
+    "flowerBox": {
+      "address": 6,
+      "statusFiles": {
+        "p6.light": "enum(on,off)",
+        "p6.temp": "number",
+        "p6.moisture": "number",
+        "p6.humid": "number"
+      },
+      "poll": {
+        "start": 2000,
+        "interval": 60000
+      }
+    },
+
+    "sunFollower": {
+      "address": 12
+    },
+
+    "meterReporter": {
+      "address": 14,
+      "statusFiles": {
+        "p14.water": "number",
+        "p14.temp": "number"
+      }
+    },
+
+    "indoorLighting": {
+      "address": 15,
+      "statusFiles": {
+        "p15.led1": "number",
+        "p15.led2": "number",
+        "p15.led3": "number",
+        "p15.led4": "number",
+        "p15.led5": "number",
+        "p15.led6": "number"
+      },
+      "poll": {
+        "start": 2500
+      }
+    }
+  }
+}

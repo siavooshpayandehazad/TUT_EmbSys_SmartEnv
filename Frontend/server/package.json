@@ -1,0 +1,21 @@
+{
+  "name": "tut-home-automation-fe",
+  "version": "0.0.1",
+  "dependencies": {
+    "async": "^1.5.0",
+    "bunyan": "^1.3.5",
+    "easy-config": "^0.4.9",
+    "extend": "^3.0.0",
+    "mysql": "^2.9.0",
+    "rsmq": "^0.3.16",
+    "rsmq-worker": "^0.3.7",
+    "sequelize": "^3.13.0",
+    "serialport": "^2.0.2"
+  },
+  "description": "Server for home automation",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  }
+}

@@ -1,1 +1,0 @@
-All the home automation front end related files goes here…
