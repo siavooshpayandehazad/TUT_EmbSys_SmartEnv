@@ -47,6 +47,10 @@
   "modules": {
     "_statusDir": "../hass/data/",
 
+    "fingerprint": {
+      "address": 1
+    },
+
     "rfid": {
       "address": 2,
       "statusFiles": {
@@ -97,6 +101,22 @@
         "start": 2000,
         "interval": 60000
       }
+    },
+
+    "sunFollower": {
+      "address": 12
+    },
+
+    "meterReporter": {
+      "address": 14,
+      "statusFiles": {
+        "p14.water": "number",
+        "p14.temp": "number"
+      }
+    },
+
+    "indoorLighting": {
+      "address": 15
     }
   }
 }
