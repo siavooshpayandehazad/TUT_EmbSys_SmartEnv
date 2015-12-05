@@ -1,6 +1,7 @@
 # Third-party modules, local test and conf files
 
 server/node_modules
+server/bower_components
 server/.idea
 
 hass/custom_components/__pycache__

@@ -2,6 +2,7 @@
 
 var bunyan = require('bunyan');
 var config = require('easy-config');
+var express = require('express');
 
 var FileBuffer = require('./lib/file-buffer');
 var serial = require('./lib/serial');
@@ -61,3 +62,24 @@ function listenHass() {
 }
 
 listenHass();
+
+// Web interface for debugging
+
+if (config.isEnvironment('dev')) {
+    var app = express();
+
+    app.use('/', express.static('./public'));
+    app.use('/bower_components', express.static('./bower_components'));
+
+    app.use('/api', require('./routes/web')());
+
+    app.use(function (err, req, res, next) {
+        log.error({err: err}, 'Error on debug interface');
+
+        res.status(500).send('<div>Unexpected error occured</div>');
+    });
+
+    app.listen(config.webInterface.port, function () {
+        log.info('Web interface running on port ' + config.webInterface.port);
+    });
+}
