@@ -89,6 +89,7 @@
         "p5.water": "enum(ok,low)",
         "p5.feed": "enum(ok,low)",
         "p5.temp": "number",
+        "p5.temp-state": "enum(low,ok,high)",
         "p5.filter": "enum(ok,dirty)"
       },
       "poll": {

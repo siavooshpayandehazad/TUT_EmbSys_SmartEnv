@@ -45,26 +45,35 @@ module.exports = function (parent) {
     router.route('S', function (packet, next) {
         packet.log.info({route: 'S', data: packet.data}, 'Handling packet');
 
+        var temperatureStates = {
+            '0': 'low',
+            '1': 'ok',
+            '2': 'high'
+        };
+
         var lightOn = !!packet.data[1];
-        var waterLow = !!packet.data[2];
-        var feedLow = !!packet.data[3];
+        var waterLevelOk = !!packet.data[2];
+        var feedLevelOk = !!packet.data[3];
         var temperature = packet.readInt8(4);
-        var filterCleaning = !!packet.data[5];
+        var temperatureState = temperatureStates[packet[5]];
+        var filterClean = !!packet.data[6];
 
         packet.log.debug({
             lightOn: lightOn,
-            waterLow: waterLow,
-            feedLow: feedLow,
+            waterLevelOk: waterLevelOk,
+            feedLevelOk: feedLevelOk,
             temperature: temperature,
-            filterCleaningNeeded: filterCleaning
+            temperatureState: temperatureState,
+            filterClean: filterClean
         }, 'Setting module states');
 
         statusFiles.updateMany({
             'p5.light': lightOn ? 'on' : 'off',
-            'p5.water': waterLow ? 'low' : 'ok',
-            'p5.feed': feedLow ? 'low' : 'ok',
-            'p5.temperature': temperature,
-            'p5.filter': filterCleaning ? 'dirty' : 'ok'
+            'p5.water': waterLevelOk ? 'ok' : 'low',
+            'p5.feed': feedLevelOk ? 'ok' : 'low',
+            'p5.temp': temperature,
+            'p5.temp-state': temperatureState,
+            'p5.filter': filterClean ? 'ok' : 'dirty'
         });
     });
 
