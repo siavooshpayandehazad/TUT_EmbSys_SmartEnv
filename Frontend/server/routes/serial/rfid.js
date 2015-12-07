@@ -80,6 +80,11 @@ Door.prototype.setMasterMode = function masterMode(masterMode) {
 };
 
 Door.prototype.lockRequest = function lockRequest(lock, master, wrong) {
+
+    if (lock) {
+
+    }
+
     // Command to component
     // TODO: timeouts for locking and master mode
     serial.write({
@@ -140,7 +145,11 @@ module.exports = function (parent) {
                 if (!accessCard) {
                     if (door.isMasterMode()) {
                         packet.log.debug({code: code}, 'Card not found and door in master mode, adding new card');
-                        AccessCard.create({code: code, isMaster: false});
+                        AccessCard
+                            .create({code: code, isMaster: false})
+                            .then(function (card) {
+                                door.lockRequest(door.isLocked(), true, false);
+                            });
                         return;
                     }
 
@@ -159,19 +168,20 @@ module.exports = function (parent) {
                         return;
                     }
                     packet.log.debug('Card already added, nothing to do');
-                    // TODO: this response should be revisited
                     door.lockRequest(door.isLocked(), true, false);
                     return;
                 }
 
                 if (accessCard.isMaster) {
                     packet.log.debug('Starting master mode');
-                    // Should be ended with timeout
+                    // TODO: Should be ended with timeout
                     door.lockRequest(door.isLocked(), true, false);
                     return;
                 }
 
-                door.lockRequest(false, false, false);
+                // Card ok and not master.
+                packet.log.debug('Card ok, not master. Toggling lock');
+                door.lockRequest(!door.isLocked(), false, false);
             })
             .catch(function (err) {
                 packet.log.error({err: err}, 'Failed to process rfid card');
