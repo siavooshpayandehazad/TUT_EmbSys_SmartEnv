@@ -11,6 +11,7 @@
 
 Install system dependencies
 
+[Install node.js](http://node-arm.herokuapp.com/)
 // TODO: add commands for installing node.js and mysql on raspbian
 
 Install global node modules

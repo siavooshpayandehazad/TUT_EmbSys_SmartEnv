@@ -86,6 +86,7 @@ module.exports = function () {
 
         childProcess.exec(cmd, {cwd: rootDir, maxBuffer: 1024*1024}, function (err, stdout, stderr) {
             if (err || stderr) {
+                req.log.error({err: err, stderr: stderr}, 'Failed to read log file');
                 res.status(400).json({
                     status: 'fail',
                     data: 'Failed to read log files'
