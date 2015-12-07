@@ -3,6 +3,8 @@
 server/node_modules
 server/bower_components
 server/.idea
+server/config/config.*.json
+server/log
 
 hass/custom_components/__pycache__
 hass/home-assistant.db

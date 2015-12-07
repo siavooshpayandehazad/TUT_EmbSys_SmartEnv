@@ -26,6 +26,7 @@ module.exports.isHexString = function (str, bytes) {
 };
 
 module.exports.encrypt = function (str) {
+    // TODO: This can be cracked in matter of minutes. Use stronger encryption
     return crypto.createHmac('sha256', config.crypto.key).update(str).digest('base64');
 };
 
