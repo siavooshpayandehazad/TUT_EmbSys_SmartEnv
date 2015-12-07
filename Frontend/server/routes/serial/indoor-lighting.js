@@ -34,8 +34,6 @@ module.exports = function (parent) {
         };
     }
 
-    var log = parent._log;
-
     serial.onOpen(function () {
 
         var pollConf = config.modules.indoorLighting.poll;
@@ -54,7 +52,7 @@ module.exports = function (parent) {
     router.middleware(middleware.extractCommandByte);
 
     router.route('S', function (packet, next) {
-        log.info({route: 'S', data: packet.data}, 'Packet routed');
+        packet.log.info({route: 'S', data: packet.data}, 'Handling packet');
 
         updateStatusFiles(packet.data.slice(1));
     });

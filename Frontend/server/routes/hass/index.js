@@ -8,8 +8,17 @@ var serial = require('../../lib/serial.js');
 var indoorLighting = require('../serial/indoor-lighting')('api');
 
 module.exports = function (opts) {
-    var router = new Router(opts);
+    var router = new Router({log: opts.log.child({sub: 'hass-router'})});
     var log = opts.log;
+
+    var moduleMap = {};
+    Object.keys(config.modules).forEach(function (key) {
+        if (key[0] === '_') {
+            return;
+        }
+        var moduleAddress = config.modules[key].address;
+        moduleMap[moduleAddress] = key;
+    });
 
     router.middleware(function (packet) {
         packet.parts = packet.raw.split(' ');
@@ -20,10 +29,14 @@ module.exports = function (opts) {
                 var number = parseInt(part, 10);
                 return isNaN(number) ? part : number;
             });
+
+        packet.log = log.child({module: moduleMap[packet.route] || packet.route});
+        packet.log.debug({data: packet.data}, 'Outgoing packet from frontend to serial');
     });
 
     router.route('DEBUG', function (packet, next) {
         // Write raw data
+        packet.debug({data: packet.data}, 'Passing DEBUG packet from frontend to serial');
         serial.write(packet.data);
     });
 
@@ -49,7 +62,7 @@ module.exports = function (opts) {
             return;
         }
 
-        log.error({route: '15', data: packet.data}, 'Data from hass: Handler not implemented');
+        packet.log.error({data: packet.data}, 'Handler not implemented for this frontend packet');
         next(new Error('Unhandled packet from hass'));
     });
 

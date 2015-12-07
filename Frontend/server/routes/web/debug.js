@@ -67,7 +67,7 @@ module.exports = function () {
             });
         }
 
-        var cmd = ['bunyan --output bunyan --no-color'];
+        var cmd = ['bunyan --output bunyan --strict --no-color'];
 
         if (level) {
             cmd.push('--level', level);
@@ -86,8 +86,6 @@ module.exports = function () {
 
         childProcess.exec(cmd, {cwd: rootDir, maxBuffer: 1024*1024}, function (err, stdout, stderr) {
             if (err || stderr) {
-                console.log(err);
-                console.log(stderr);
                 res.status(400).json({
                     status: 'fail',
                     data: 'Failed to read log files'
@@ -102,7 +100,14 @@ module.exports = function () {
                     return !!str;
                 })
                 .map(function (str) {
-                    return JSON.parse(str);
+                    try {
+                        return JSON.parse(str);
+                    } catch (err) {
+                        req.log.debug({err: err, log: str}, 'Failed to parse log entry');
+                    }
+                })
+                .filter(function (json) {
+                    return !!json;
                 });
 
             res.status(200).json(logs);
