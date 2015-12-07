@@ -135,7 +135,7 @@ Serial.prototype.write = function write(data, opts, cb) {
 
     if (typeof data === 'object' && !Array.isArray(data)) {
         data = [
-            data.data.length + 2,
+            data.data.length + 1,// length does not include length byte itself
             data.to
         ].concat(bytesToInts(data.data));
     } else if (Array.isArray(data)) {
