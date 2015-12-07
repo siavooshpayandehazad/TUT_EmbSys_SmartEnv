@@ -51,7 +51,7 @@ Door.prototype.setLocked = function setLocked(locked) {
 
     _this._statusFiles.update('p2.lock', _this._locked, function (err) {
         if (err) {
-            _this._log('error', {err: err, statusFile: 'p2.lock'}, 'Failed to update');
+            _this._log('debug', {err: err, statusFile: 'p2.lock'}, 'Failed to update');
         }
     });
 };
@@ -66,7 +66,7 @@ Door.prototype.setError = function setError(error) {
 
     _this._statusFiles.update('p2.status', _this._error ? 'fault': 'ok', function (err) {
         if (err) {
-            _this._log('error', {err: err, statusFile: 'p2.status'}, 'Failed to update');
+            _this._log('debug', {err: err, statusFile: 'p2.status'}, 'Failed to update');
         }
     });
 };
@@ -103,9 +103,7 @@ Door.prototype.getStatus = function getStatus() {
 
 
 module.exports = function (parent) {
-    var log = parent._log;
-
-    var door = Door({log: log});
+    var door = Door({log: parent._log.child({sub: 'door-object'})});
 
     serial.onOpen(function () {
 
@@ -128,8 +126,8 @@ module.exports = function (parent) {
     router.middleware(middleware.extractCommandByte);
 
     router.route('C', function (packet, next) {
-        log.info({route: 'C'}, 'Handling RFID card');
-        log.debug({route: 'C', data: packet.data}, 'Handling RFID card');
+        packet.log.info({route: 'C'}, 'Handling packet');
+        packet.log.debug({route: 'C', data: packet.data}, 'Handling RFID card');
 
         // Take 10-byte code from buffer as hex.
         var code = packet.data
@@ -141,33 +139,33 @@ module.exports = function (parent) {
             .then(function (accessCard) {
                 if (!accessCard) {
                     if (door.isMasterMode()) {
-                        log.debug({code: code}, 'Card not found and door in master mode, adding new card');
+                        packet.log.debug({code: code}, 'Card not found and door in master mode, adding new card');
                         AccessCard.create({code: code, isMaster: false});
                         return;
                     }
 
-                    log.debug({code: code}, 'Card not found and door in normal mode, doing nothing');
+                    packet.log.debug({code: code}, 'Card not found and door in normal mode, doing nothing');
                     door.lockRequest(door.isLocked(), false, true);
 
                     return;
                 }
 
-                log.debug({card: accessCard.toJSON()}, 'Found accessCard from database');
+                packet.log.debug({card: accessCard.toJSON()}, 'Found accessCard from database');
 
                 if (door.isMasterMode()) {
                     if (accessCard.isMaster) {
-                        log.debug('Ending master mode');
+                        packet.log.debug('Ending master mode');
                         door.lockRequest(door.isLocked(), false, false);
                         return;
                     }
-                    log.debug('Card already added, nothing to do');
+                    packet.log.debug('Card already added, nothing to do');
                     // TODO: this response should be revisited
                     door.lockRequest(door.isLocked(), true, false);
                     return;
                 }
 
                 if (accessCard.isMaster) {
-                    log.debug('Starting master mode');
+                    packet.log.debug('Starting master mode');
                     // Should be ended with timeout
                     door.lockRequest(door.isLocked(), true, false);
                     return;
@@ -176,12 +174,12 @@ module.exports = function (parent) {
                 door.lockRequest(false, false, false);
             })
             .catch(function (err) {
-                log.error({err: err}, 'Failed to process rfid card');
+                packet.log.error({err: err}, 'Failed to process rfid card');
             });
     });
 
     router.route('S', function (packet, next) {
-        log.info({route: 'S', data: packet.data}, 'Packet routed');
+        packet.log.info({route: 'S', data: packet.data}, 'Handling packet');
 
         var linkRssi = packet.data[1];
         var nfcRssiOfLast = packet.data[2];

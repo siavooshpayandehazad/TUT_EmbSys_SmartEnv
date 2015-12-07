@@ -2,8 +2,15 @@
   "name": "tut-home-automation-fe",
 
   "log": {
-    "name": "hafe-server",
-    "level": "trace"
+    "bunyan": {
+      "name": "hafe-server",
+      "level": "trace"
+    },
+    "file": "./log/server.log"
+  },
+
+  "webInterface": {
+    "port": 3000
   },
 
   "rf": {

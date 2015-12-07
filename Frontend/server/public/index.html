@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-ng-app="HAFE">
+<head>
+    <meta charset="UTF-8">
+
+    <title>HAFE</title>
+
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+</head>
+<body data-ng-controller="MainController">
+
+    <div class="container">
+        <div ui-view></div>
+    </div>
+
+    <!-- Dependencies -->
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+
+    <!-- App files -->
+    <script type="text/javascript" src="app/main.js"></script>
+    <script type="text/javascript" src="app/config/config.js"></script>
+    <script type="text/javascript" src="app/controllers/main.js"></script>
+    <script type="text/javascript" src="app/controllers/log.js"></script>
+
+</body>
+</html>

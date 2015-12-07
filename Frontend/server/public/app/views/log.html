@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Logs</h1>
+        <hr>
+    </div>
+
+    <div class="col-xs-12">
+        <h2>Filter</h2>
+
+        <!-- Filters header -->
+        <div class="row">
+            <div class="col-xs-3">
+                <label class="">Log level</label>
+            </div>
+            <div class="col-xs-3">
+                <label class="">Time start</label>
+            </div>
+            <div class="col-xs-3">
+                <label class="">Time end</label>
+            </div>
+        </div>
+
+        <!-- Filter inputs -->
+        <div class="row">
+            <div class="col-xs-3">
+                <select class="form-control" ng-model="filter.level" ng-options="level for level in levelOptions"></select>
+            </div>
+            <div class="col-xs-3">
+                <input class="form-control" type="text" ng-model="filter.timeStart" placeholder="BEGINNING OF TIME">
+                <label>Quick select</label>
+                <select class="form-control" ng-options="opt.value as opt.label for opt in timeOptions" ng-model="timeSelect.start" ng-change="setTimeFilter('timeStart', timeSelect.start)">
+                    <option value="">BEGINNING OF TIME</option>
+                </select>
+            </div>
+            <div class="col-xs-3">
+                <input class="form-control" type="text" ng-model="filter.timeEnd" placeholder="NOW">
+                <label>Quick select</label>
+                <select class="form-control" ng-options="opt.value as opt.label for opt in timeOptions" ng-model="timeSelect.end" ng-change="setTimeFilter('timeEnd', timeSelect.end)">
+                    <option value="">NOW</option>
+                </select>
+            </div>
+            <div class="col-xs-3">
+                <button class="btn btn-default" ng-click="loadLogs()">Refresh</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12"><button class="btn btn-default btn-sm" ng-class="{active: showHelp}" ng-click="showHelp = !showHelp">Show help</button></div>
+        </div>
+        <div class="row" ng-show="showHelp">
+            <div class="col-xs-3">
+                <h4>Log levels</h4>
+                <ul>
+                    <li><code>error</code> - show only errors</li>
+                    <li><code>warn</code> - show warnings</li>
+                    <li><code>info</code> - show info messages</li>
+                    <li><code>debug</code> - show debug messages</li>
+                    <li><code>trace</code> - show very detailed debug messages (not recommended)</li>
+                </ul>
+                <p>Each level also includes higher priority messages. For example, querying <code>info</code> logs, also gives <code>error</code> and <code>warn</code> level logs.</p>
+            </div>
+            <div class="col-xs-6">
+                <h4>Start and end time</h4>
+                <p>Select time constraint to limit shown logs. Use quick select for pre-defined intervals. If higher precision is needed, then write ISO string in text input (must be in UTC).</p>
+            </div>
+        </div>
+
+        <hr>
+    </div>
+
+    <div class="col-xs-12" ng-show="loading">
+        <h3>Loading...</h3>
+    </div>
+
+    <div class="col-xs-12" ng-show="!loading && error">
+        <div class="alert alert-danger">Error: {{error.data || 'Failed to load logs'}}</div>
+    </div>
+
+    <div class="col-xs-12" ng-show="!loading && !error && !logs.length">
+        <h3>No logs found. Expand filters</h3>
+    </div>
+
+    <div class="col-xs-12" ng-show="!loading">
+        <div class="row" ng-repeat="log in logs">
+            <div class="col-xs-12 log">
+                <div>
+                    <span class="time">[{{log.time}}]</span>
+                    <span class="level" ng-class="log.level">{{log.level.toUpperCase()}}</span>
+                    <span class="msg">{{log.msg}}</span>
+                </div>
+                <div class="details" ng-show="log.details" ng-bind-html="log.details"></div>
+            </div>
+        </div>
+    </div>
+</div>

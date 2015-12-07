@@ -16,7 +16,6 @@ var statusFiles = ModuleStatus({
 
 
 module.exports = function (parent) {
-    var log = parent._log;
 
     serial.onOpen(function () {
 
@@ -44,13 +43,21 @@ module.exports = function (parent) {
     router.middleware(middleware.extractCommandByte);
 
     router.route('S', function (packet, next) {
-        log.info({route: 'S', data: packet.data}, 'Packet routed');
+        packet.log.info({route: 'S', data: packet.data}, 'Handling packet');
 
         var lightOn = !!packet.data[1];
         var waterLow = !!packet.data[2];
         var feedLow = !!packet.data[3];
         var temperature = packet.readInt8(4);
         var filterCleaning = !!packet.data[5];
+
+        packet.log.debug({
+            lightOn: lightOn,
+            waterLow: waterLow,
+            feedLow: feedLow,
+            temperature: temperature,
+            filterCleaningNeeded: filterCleaning
+        }, 'Setting module states');
 
         statusFiles.updateMany({
             'p5.light': lightOn ? 'on' : 'off',

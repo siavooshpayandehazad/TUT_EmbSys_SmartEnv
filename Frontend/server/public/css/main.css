@@ -1,0 +1,34 @@
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+/* Logs */
+
+.log {
+    font-family: monospace;
+}
+
+.log .time {
+    font-weight: bold;
+}
+
+.log .level {
+    font-weight: bold;
+}
+.log .level.debug {
+    color: brown;
+}
+.log .level.info {
+    color: #000088;
+}
+.log .level.warn {
+    color: #ec971f;
+}
+.log .level.error {
+    color: red;
+}
+
+.log .details {
+    margin-left: 50px;
+}
