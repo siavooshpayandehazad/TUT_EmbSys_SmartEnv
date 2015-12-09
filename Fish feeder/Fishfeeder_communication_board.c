@@ -234,3 +234,10 @@ void Print_Error(uint8 error_code) {
 
 	exit_code = 0;
 }
+/***************************************************************************************************
+ *         History of changes                                                                       *
+ ***************************************************************************************************/
+
+//[Week 13] Took the given RF code and started to modify it to meet our needs
+//[Week 14] Got the data from one MSP to another and from there to the server by implementing UART interrupt 
+//[Week 15] Added compare functionalities, which made it possible to send values only when something changes in the aquarium.
