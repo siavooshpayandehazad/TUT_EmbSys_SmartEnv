@@ -18,13 +18,13 @@
  $                 $Workfile::   main.c                                                                                       $
  $                 $Revision::   1.0                                                                                          $
  $                 $Date::   13.10.2015                                                                                       $
- *                                                                                    								      								  *
+ *                                                                                    	 				      *
  *                 Manager:       Yuanxu Xu                                                                                   *
- *                 Developers:    Martin Grosberg									                                                            *
- *                  		          Aivar Koodi										                                                              *
- *				                        Marek Aare										                                                              *
- *		                            Sander Sinijärv									                                                            *
- *		                            Kätlin Lahtvee                                                                              *
+ *                 Developers:    Martin Grosberg  		                                                              *
+ *                  		  Aivar Koodi			                                                              *
+ *				  Marek Aare			                                                              *
+ *		                  Sander Sinijärv	 	                                                              *
+ *		                  Kätlin Lahtvee                                                                              *
  *                 Target:        Fishfeeder Project 2015 for communication MSP430                                            *
  *                                                                                                                            *
  *****************************************************************************************************************************/
@@ -65,7 +65,7 @@ uint8_t compareArrays(uint8_t *data_transmit_buffer, uint8_t *data_memory_buffer
 void Print_Error(uint8 error_code);
 
 /***************************************************************************************************
- *	        Global Variable section  				                            				   *
+ *	        Global Variable section  				                            *
  ***************************************************************************************************/
 uint8 exit_code = 0;		// Exit code number that is set after function exits
 uint8 payload_length;
