@@ -142,8 +142,8 @@ UCA0MCTL = UCBRS0;       	// Modulation UCBRSx = 1
 UCA0CTL1 &= ~UCSWRST;    	// **Initialize USCI state machine**
 
 //Enable motor
-P2DIR = 0x3D; // Allow P2 pins 2 to 5 to output for motor and
-P2OUT = 0x3D; // Disable everything.
+P2DIR = 0x3C; // Allow P2 pins 2 to 5 to output for motor and
+P2OUT = 0x3C; // Disable everything.
 
 IE2 |= UCA0RXIE;         	//enable RX interrupt
 
