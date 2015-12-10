@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
         isMaster: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false}
     }, {
         hooks: {
-            afterValidate: function afterValidate(accessCard) {
+/*            afterValidate: function afterValidate(accessCard) {
                 if (accessCard.isNewRecord) {
                     // TODO: ensure that code cannot be changed for existing records
                     accessCard.code = utils.encrypt(accessCard.code);
@@ -26,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
                 if (options.code) {
                     options.code = utils.encrypt(options.code);
                 }
-            }
+            }*/
         }
     });
 };
