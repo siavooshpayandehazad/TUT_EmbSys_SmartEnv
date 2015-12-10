@@ -140,7 +140,7 @@ module.exports = function (parent) {
             .toString('hex');
 
         AccessCard
-            .find({code: code})
+            .find({where: {code: code}})
             .then(function (accessCard) {
                 if (!accessCard) {
                     if (door.isMasterMode()) {
