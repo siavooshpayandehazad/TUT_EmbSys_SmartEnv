@@ -93,7 +93,7 @@ Router.prototype._invoke = function _invoke(packet, next) {
 
     var _this = this;
 
-    invokeHandler(handler, extend(true, {}, packet, beforeNext));
+    invokeHandler(handler, extend(true, {}, packet), beforeNext);
 
     function beforeNext(err) {
         if (err && err._routeNotFound && _this._defaultHandler && !usingDefault) {

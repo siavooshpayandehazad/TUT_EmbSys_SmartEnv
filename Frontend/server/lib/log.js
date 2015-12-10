@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.serializers = {
+var serializers = {
     data: function (data) {
         if (!(data instanceof Buffer) && !(data instanceof Array)) {
             return data;
@@ -20,5 +20,25 @@ module.exports.serializers = {
                 })
                 .join(' ')
         };
+    },
+    packet: function (packet) {
+        var reduced = {};
+
+        Object.keys(packet).forEach(function (key) {
+            if (key === 'log') {
+                return;
+            }
+
+            if (['data', 'raw'].indexOf(key) !== -1) {
+                reduced[key] = serializers.data(packet[key]);
+                return;
+            }
+
+            reduced[key] = packet[key];
+        });
+
+        return reduced;
     }
 };
+
+module.exports.serializers = serializers;
