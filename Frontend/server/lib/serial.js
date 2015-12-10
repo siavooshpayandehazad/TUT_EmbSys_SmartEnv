@@ -73,7 +73,7 @@ function Serial(opts) {
             timer = setTimeout(resetPacket, timeout);
 
             // First byte defines packet length
-            packetLength = data[0];
+            packetLength = data[0] + 1;
         }
 
         packetData = Buffer.concat([packetData, data]);
@@ -135,7 +135,7 @@ Serial.prototype.write = function write(data, opts, cb) {
 
     if (typeof data === 'object' && !Array.isArray(data)) {
         data = [
-            data.data.length + 1,// length does not include length byte itself
+            data.data.length,
             data.to
         ].concat(bytesToInts(data.data));
     } else if (Array.isArray(data)) {

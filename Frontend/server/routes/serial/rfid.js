@@ -117,7 +117,7 @@ module.exports = function (parent) {
             data: ['R']
         }, function (err) {
             if (err) {
-                log.error({err: err}, 'Failed to send status request to rfid component');
+                parent._log.error({err: err}, 'Failed to send status request to rfid component');
                 // TODO: retry
                 // TODO: should be possible to check if 'S' packet actually arrived
                 return;

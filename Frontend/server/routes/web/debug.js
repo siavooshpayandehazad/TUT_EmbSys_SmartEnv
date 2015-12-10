@@ -80,7 +80,7 @@ module.exports = function () {
             cmd.push('--condition', '\'this.time <=', utils.quoteString(timeEnd) + '\'');
         }
 
-        cmd.push(config.log.file);
+        cmd.push(path.isAbsolute(config.log.file) ? config.log.file : path.join(rootDir));
 
         cmd = cmd.join(' ');
 

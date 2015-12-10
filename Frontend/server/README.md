@@ -16,8 +16,11 @@ Install system dependencies
 
 Install global node modules
 
-`npm install -g bower`
-`npm install -g forever`
+```
+npm install -g bower
+npm install -g bunyan
+npm install -g forever
+```
 
 Clone Frontend files from GitHub
 
