@@ -169,7 +169,7 @@ class FPS_GT511C3
 	~FPS_GT511C3();
 
 	//Initialises the device and gets ready for commands
-	void Open();
+	bool Open();
 
 	// Does not actually do anything (according to the datasheet)
 	// I implemented open, so had to do closed too... lol

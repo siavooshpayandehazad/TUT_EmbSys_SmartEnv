@@ -68,8 +68,8 @@ void main(void) {
 	FPS_GT511C3 fps(4, 3);
 	fps.UseSerialDebug = false;
 	fps.Open();
-	if(fps.SetLED(true))
-		P1OUT |= BIT6;
+	while(!fps.SetLED(true));
+	P1OUT |= BIT6;
 
 	lcdclear();
 	lcdcursor(0,0);
