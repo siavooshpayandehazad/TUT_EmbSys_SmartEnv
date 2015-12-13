@@ -44,11 +44,11 @@
 /* -heap   0x0100                                   HEAP AREA SIZE            */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-/* Version: 1.159                                                             */
+/* Version: 1.139                                                             */
 /*----------------------------------------------------------------------------*/
 
 /****************************************************************************/
-/* Specify the system memory map                                            */
+/* SPECIFY THE SYSTEM MEMORY MAP                                            */
 /****************************************************************************/
 
 MEMORY
@@ -81,34 +81,33 @@ MEMORY
 }
 
 /****************************************************************************/
-/* Specify the sections allocation into memory                              */
+/* SPECIFY THE SECTIONS ALLOCATION INTO MEMORY                              */
 /****************************************************************************/
 
 SECTIONS
 {
-    .bss        : {} > RAM                  /* Global & static vars              */
-    .data       : {} > RAM                  /* Global & static vars              */
-    .TI.noinit  : {} > RAM                  /* For #pragma noinit                */
-    .sysmem     : {} > RAM                  /* Dynamic memory allocation area    */
-    .stack      : {} > RAM (HIGH)           /* Software system stack             */
+    .bss        : {} > RAM                  /* GLOBAL & STATIC VARS              */
+    .data       : {} > RAM                  /* GLOBAL & STATIC VARS              */
+    .sysmem     : {} > RAM                  /* DYNAMIC MEMORY ALLOCATION AREA    */
+    .stack      : {} > RAM (HIGH)           /* SOFTWARE SYSTEM STACK             */
 
-    .text       : {} > FLASH                /* Code                              */
-    .cinit      : {} > FLASH                /* Initialization tables             */
-    .const      : {} > FLASH                /* Constant data                     */
-    .cio        : {} > RAM                  /* C I/O Buffer                      */
+    .text       : {} > FLASH                /* CODE                              */
+    .cinit      : {} > FLASH                /* INITIALIZATION TABLES             */
+    .const      : {} > FLASH                /* CONSTANT DATA                     */
+    .cio        : {} > RAM                  /* C I/O BUFFER                      */
 
-    .pinit      : {} > FLASH                /* C++ Constructor tables            */
-    .init_array : {} > FLASH                /* C++ Constructor tables            */
-    .mspabi.exidx : {} > FLASH              /* C++ Constructor tables            */
-    .mspabi.extab : {} > FLASH              /* C++ Constructor tables            */
+    .pinit      : {} > FLASH                /* C++ CONSTRUCTOR TABLES            */
+    .init_array : {} > FLASH                /* C++ CONSTRUCTOR TABLES            */
+    .mspabi.exidx : {} > FLASH              /* C++ CONSTRUCTOR TABLES            */
+    .mspabi.extab : {} > FLASH              /* C++ CONSTRUCTOR TABLES            */
 
-    .infoA     : {} > INFOA              /* MSP430 INFO FLASH Memory segments */
+    .infoA     : {} > INFOA              /* MSP430 INFO FLASH MEMORY SEGMENTS */
     .infoB     : {} > INFOB
     .infoC     : {} > INFOC
     .infoD     : {} > INFOD
 
-    /* MSP430 Interrupt vectors          */
-    TRAPINT      : { * ( .int00 ) } > INT00 type = VECT_INIT
+    /* MSP430 INTERRUPT VECTORS          */
+    .int00       : {}               > INT00
     .int01       : {}               > INT01
     PORT1        : { * ( .int02 ) } > INT02 type = VECT_INIT
     PORT2        : { * ( .int03 ) } > INT03 type = VECT_INIT
@@ -123,11 +122,11 @@ SECTIONS
     TIMER1_A1    : { * ( .int12 ) } > INT12 type = VECT_INIT
     TIMER1_A0    : { * ( .int13 ) } > INT13 type = VECT_INIT
     NMI          : { * ( .int14 ) } > INT14 type = VECT_INIT
-    .reset       : {}               > RESET  /* MSP430 Reset vector         */ 
+    .reset       : {}               > RESET  /* MSP430 RESET VECTOR         */ 
 }
 
 /****************************************************************************/
-/* Include peripherals memory map                                           */
+/* INCLUDE PERIPHERALS MEMORY MAP                                           */
 /****************************************************************************/
 
 -l msp430g2553.cmd
