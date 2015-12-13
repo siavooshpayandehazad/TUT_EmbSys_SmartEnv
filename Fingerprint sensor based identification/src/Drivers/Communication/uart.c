@@ -98,8 +98,18 @@ void UartSendLen(unsigned char * buf, unsigned char len)
 // last fetch.  Returns the number of bytes copied.
 unsigned int UartReceiveBytesInBuffer(unsigned char* buf)
 {
-    unsigned int i, count;
-    while(UartRcvBufIndex != 12);//wait for all data to be received
+    unsigned int i, count, Try = 0;
+    while(UartRcvBufIndex != 12 && Try < 500)//wait for all data to be received
+    {
+    	__delay_cycles(5000);
+    	Try++;
+    }
+
+    if(Try >= 500)
+    	UartRcvBufIndex = 0;
+
+    for(i = 0; i<12; i++)
+    	buf[i] = 0;
 
     // Hold off ints for incoming data during the copy
     UCA0IE &= ~UCRXIE;

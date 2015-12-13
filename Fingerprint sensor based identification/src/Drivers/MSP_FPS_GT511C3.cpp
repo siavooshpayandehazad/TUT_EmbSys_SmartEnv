@@ -217,8 +217,9 @@ FPS_GT511C3::~FPS_GT511C3()
 }
 
 //Initialises the device and gets ready for commands
-void FPS_GT511C3::Open()
+bool FPS_GT511C3::Open()
 {
+	bool retval = false;
 	Command_Packet* cp = new Command_Packet();
 	cp->Command = Command_Packet::Commands::Open;
 	cp->Parameter[0] = 0x00;
@@ -228,8 +229,12 @@ void FPS_GT511C3::Open()
 	unsigned char* packetbytes = cp->GetPacketBytes();
 	SendCommand(packetbytes, 12);
 	Response_Packet* rp = GetResponse();
+
+	if (rp->ACK == false) retval = false;
+
 	delete rp;
 	delete packetbytes;
+	return retval;
 }
 
 // According to the DataSheet, this does nothing...
