@@ -23,7 +23,7 @@ history:
 frontend:
 
 # Discover some devices automatically
-discovery:
+#discovery:
 
 # Allows you to issue voice commands from the frontend
 #conversation:
@@ -31,29 +31,173 @@ discovery:
 # Show links to resources in log and frontend
 #introduction:
 
-group:
-  Front door:
-    - switch.door_lock
+hello_world:
 
-sensor 1:
-  platform: command_sensor
+group:
+  Front Door:
+    - switch.door_lock
+    - sensor.lock_state
+  Outdoor Sensors:
+    - sensor.air_temperature
+    - sensor.air_humidity
+    - sensor.air_pressure
+    - sensor.light_intensity
+    - sensor.battery_status
+  Fish Feeder:
+    - sensor.tank_temperature
+    - sensor.temperature_status
+    - sensor.water_level
+    - sensor.light
+    - sensor.feed_level
+    - sensor.filter_status
+  Flower Box:
+    - sensor.plant_light
+    - sensor.soil_temperature
+    - sensor.moisture
+    - sensor.humidity
+  Water meter:
+    - sensor.water_amount
+    - sensor.water_temperature
+  Indoor lighting:
+    - switch.led_1
+    - switch.led_2
+    - switch.led_3
+    - switch.led_4
+
+sensor 41:
+  platform: command_sensor_custom
   name: CPU
-  command: "sh ./scr/cpu_freq.sh"
+  command: "sh /home/manki/.homeassistant/scr/cpu_freq.sh"
   unit_of_measurement: "MHz"
   decimal_places: 0
 
-sensor 2:
-  platform: command_sensor
-  name: door_lock_state
-  command: "cat ./data/p2.lock"
+sensor 21:
+  platform: command_sensor_custom
+  name: Lock state
+  command: "getsens p2.lock"
   decimal_places: 0
 
-switch door_lock:
+sensor 31:
+  platform: command_sensor_custom
+  name: Air temperature
+  command: "getsens p3.temp"
+  unit_of_measurement: "°C"
+
+sensor 32:
+  platform: command_sensor_custom
+  name: Air humidity
+  command: "getsens p3.humid"
+  unit_of_measurement: "%"
+
+sensor 33:
+  platform: command_sensor_custom
+  name: Air pressure
+  command: "getsens p3.pressure"
+  unit_of_measurement: "hPa"
+
+sensor 34:
+  platform: command_sensor_custom
+  name: Light intensity
+  command: "getsens p3.light"
+
+sensor 35:
+  platform: command_sensor_custom
+  name: Battery status
+  command: "getsens p3.battery"
+
+sensor 51:
+  platform: command_sensor_custom
+  name: Light
+  command: "getsens p5.light"
+
+sensor 52:
+  platform: command_sensor_custom
+  name: Water level
+  command: "getsens p5.water"
+
+sensor 53:
+  platform: command_sensor_custom
+  name: Feed level
+  command: "getsens p5.feed"
+
+sensor 54:
+  platform: command_sensor_custom
+  name: Tank temperature
+  command: "getsens p5.temp"
+  unit_of_measurement: "°C"
+
+sensor 55:
+  platform: command_sensor_custom
+  name: Temperature status
+  command: "getsens p5.temp-state"
+
+sensor 56:
+  platform: command_sensor_custom
+  name: Filter status
+  command: "getsens p5.filter"
+
+sensor 61:
+  platform: command_sensor_custom
+  name: Plant light
+  command: "getsens p6.light"
+
+sensor 62:
+  platform: command_sensor_custom
+  name: Soil temperature
+  command: "getsens p6.temp"
+
+sensor 63:
+  platform: command_sensor_custom
+  name: Moisture
+  command: "getsens p6.moisture"
+  unit_of_measurement: "%"
+
+sensor 64:
+  platform: command_sensor_custom
+  name: Humidity
+  command: "getsens p6.humid"
+  unit_of_measurement: "%"
+
+sensor 141:
+  platform: command_sensor_custom
+  name: Water amount
+  command: "getsens p14.water"
+  unit_of_measurement: "ml"
+
+sensor 142:
+  platform: command_sensor_custom
+  name: Water temperature
+  command: "getsens p14.temp"
+  unit_of_measurement: "°C"
+
+light:
+  platform: hue
+
+configurator:
+  
+
+switch 1:
   platform: command_switch
   switches:
-    Door lock:
-      oncmd: "sh ./scr/comm.sh 02 L 1"
-      offcmd: "sh ./scr/comm.sh 02 L 0"
+    Door Lock:
+      oncmd: "sendcomm 2 L 1"
+      offcmd: "sendcomm 2 L 0"
+
+switch 2:
+  platform: command_switch
+  switches:
+    LED 1:
+      oncmd: "sendcomm 15 L1 100"
+      offcmd: "sendcomm 15 L1 0"
+    LED 2:
+      oncmd: "sendcomm 15 L2 100"
+      offcmd: "sendcomm 15 L2 0"
+    LED 3:
+      oncmd: "sendcomm 15 L3 100"
+      offcmd: "sendcomm 15 L3 0"
+    LED 4:
+      oncmd: "sendcomm 15 L4 100"
+      offcmd: "sendcomm 15 L4 0"
 
 automation:
 - alias: "Update door lock on"
@@ -74,4 +218,5 @@ automation:
     entity_id: switch.door_lock
     service: switch.turn_off
 
-your_project:
+
+
