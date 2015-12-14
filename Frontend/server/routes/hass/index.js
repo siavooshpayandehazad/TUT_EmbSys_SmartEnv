@@ -87,8 +87,13 @@ module.exports = function (opts) {
                     data: sendData
                 });
 
-                // Update status files
-                indoorLighting.updateStatusFiles(packet.data.slice(1), true);
+                // Update changed led status file
+                packet.log.debug({ledIndex: ledIndex}, 'Updating status file of led ' + ledIndex);
+                indoorLighting.statusFiles.update('p15.led' + ledIndex, ledValue, function (err) {
+                    if (err) {
+                        packet.log.error({err: err}, 'Error updating status file of led ' + ledIndex);
+                    }
+                });
             });
 
             return;
