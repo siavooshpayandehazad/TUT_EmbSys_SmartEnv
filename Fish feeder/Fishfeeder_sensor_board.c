@@ -94,7 +94,7 @@ int power = 0;
 int feed = 0;
 
 //Cleaning reminder
-int clean = 0;
+int clean = 1;
 
 /***************************************************************************************************
  *         Main section                                                                            *
@@ -157,7 +157,7 @@ __enable_interrupt();
 		{
 			//Filter reminders
 			P1OUT |= LED_1;			//Kuidas initializeda ja kinni panna led ilma toggleita
-			clean = 1;
+			clean = 0;
 			clean_tank = 0;
 		}
 
@@ -512,7 +512,7 @@ __interrupt void Timer_A (void)
 __interrupt void Port_1(void)
 {
 	P1OUT &= ~LED_1;
-	clean = 0;
+	clean = 1;
 	cleaning_counter = 0;
 	P1IFG &= ~S2; //clears the interrupt
 }
