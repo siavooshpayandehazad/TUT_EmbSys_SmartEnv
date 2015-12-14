@@ -105,7 +105,7 @@ Door.prototype.getStatus = function getStatus() {
 
 
 module.exports = function (parent) {
-    var door = Door({log: bunyan.createLogger({name: 'door-object', level: config.log.level})});
+    var door = Door({log: bunyan.createLogger({name: 'door-object', level: config.log.bunyan.level})});
 
     if (parent === 'api') {
         return {

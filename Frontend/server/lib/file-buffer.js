@@ -26,19 +26,24 @@ FileBuffer.prototype.init = function init() {
     // TODO: make it possible to stop watching
     // TODO: use promises
 
-    // TODO: when more than one line written, then data is read twice
+    _this._readInProgress = false;
+
     fs.watch(this._filename, function (event, filename) {
-        if (event !== 'change') {
+        if (_this._readInProgress || event !== 'change') {
             return;
         }
+
+        _this._readInProgress = true;
 
         fs.readFile(_this._filename, {encoding: 'utf-8'}, function (err, contents) {
             if (!contents) {
                 // File is empty.
+                _this._readInProgress = false;
                 return;
             }
 
             fs.truncate(_this._filename, 0, function (err) {
+                _this._readInProgress = false;
 
                 var lines = contents.split(/[\n\r]+/);
 
