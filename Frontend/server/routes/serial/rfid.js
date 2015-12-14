@@ -1,5 +1,6 @@
 'use strict';
 
+var bunyan = require('bunyan');
 var config = require('easy-config');
 var path = require('path');
 
@@ -81,10 +82,6 @@ Door.prototype.setMasterMode = function masterMode(masterMode) {
 
 Door.prototype.lockRequest = function lockRequest(lock, master, wrong) {
 
-    if (lock) {
-
-    }
-
     // Command to component
     // TODO: timeouts for locking and master mode
     serial.write({
@@ -108,7 +105,13 @@ Door.prototype.getStatus = function getStatus() {
 
 
 module.exports = function (parent) {
-    var door = Door({log: parent._log.child({sub: 'door-object'})});
+    var door = Door({log: bunyan.createLogger({name: 'door-object', level: config.log.level})});
+
+    if (parent === 'api') {
+        return {
+            door: door
+        };
+    }
 
     serial.onOpen(function () {
 

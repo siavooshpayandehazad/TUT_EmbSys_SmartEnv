@@ -27,6 +27,7 @@ module.exports = function (opts) {
         packet.log.info('Incoming packet');
     });
 
+    router.route(1, require('./fingerprint')(router));
     router.route(2, require('./rfid')(router));
     router.route(3, require('./outdoor')(router));
     router.route(5, require('./fish-feeder')(router));

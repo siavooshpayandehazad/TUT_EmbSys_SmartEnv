@@ -56,7 +56,10 @@
     "_statusDir": "../hass/data/",
 
     "fingerprint": {
-      "address": 1
+      "address": 1,
+      "statusFiles": {
+        "p1.id": "number"
+      }
     },
 
     "rfid": {
