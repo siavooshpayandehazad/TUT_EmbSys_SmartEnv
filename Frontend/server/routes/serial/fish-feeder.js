@@ -54,8 +54,8 @@ module.exports = function (parent) {
         var lightOn = !!packet.data[1];
         var waterLevelOk = !!packet.data[2];
         var feedLevelOk = !!packet.data[3];
-        var temperature = packet.readInt8(4);
-        var temperatureState = temperatureStates[packet[5]];
+        var temperature = packet.data.readInt8(4);
+        var temperatureState = temperatureStates[packet.data[5]];
         var filterClean = !!packet.data[6];
 
         packet.log.debug({
