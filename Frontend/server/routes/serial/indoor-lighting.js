@@ -35,7 +35,7 @@ module.exports = function (parent) {
         };
     }
 
-    serial.onOpen(function () {
+/*    serial.onOpen(function () {
 
         var pollConf = config.modules.indoorLighting.poll;
 
@@ -56,7 +56,7 @@ module.exports = function (parent) {
         packet.log.info({route: 'S', data: packet.data}, 'Handling packet');
 
         updateStatusFiles(packet.data.slice(1));
-    });
+    });*/
 
     return router;
 };

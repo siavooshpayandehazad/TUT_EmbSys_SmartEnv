@@ -51,13 +51,13 @@ module.exports = function (opts) {
             var ledIndex = parseInt(command[1], 10);
             var ledValue = parseInt(packet.data[1], 10) || 0;
 
-            if (ledIndex < 1 || ledIndex > 6) {
+            if (ledIndex < 1 || ledIndex > 5) {
                 packet.log.error({command: command, ledIndex: ledIndex}, 'Wrong led index');
                 next(new Error('Wrong led index'));
                 return;
             }
 
-            var files = [1, 2, 3, 4, 5, 6]
+            var files = [1, 2, 3, 4, 5]
                 .filter(function (index) {
                     return index !== ledIndex;
                 })
@@ -72,7 +72,7 @@ module.exports = function (opts) {
                 }
 
                 var sendData = ['L'];
-                for (var i = 1; i <= 6; ++i) {
+                for (var i = 1; i <= 5; ++i) {
                     if (i === ledIndex) {
                         sendData[i] = Math.round(ledValue * 255 / 100);
                         continue;
