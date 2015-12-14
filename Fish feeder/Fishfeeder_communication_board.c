@@ -131,7 +131,7 @@ void main(void) {
 			// Construct the packet
 			// This is the place where you can put your own data to send
 			TxPacket[payload_length++] = PKT_CTRL | PKT_CTRL_REQUEST;
-			TxPacket[payload_length++] = PKT_TYPE_VOLTAGE;
+			TxPacket[payload_length++] = 'S';
 			TxPacket[payload_length++] = data_transmit_buffer[0];
 			TxPacket[payload_length++] = data_transmit_buffer[1];
 			TxPacket[payload_length++] = data_transmit_buffer[2];
@@ -140,7 +140,7 @@ void main(void) {
 			TxPacket[payload_length++] = data_transmit_buffer[5];
 
 			// Send data over RF and get the exit code to check for errors
-			exit_code = Radio_Send_Data(TxPacket, payload_length, ADDR_REMOTE, PAYLOAD_ENC_ON, PCKT_ACK_ON);
+			exit_code = Radio_Send_Data(TxPacket, payload_length, ADDR_REMOTE, PAYLOAD_ENC_OFF, PCKT_ACK_ON);
 
 			// Add some delay (around 2sec)
 			__delay_cycles(5000000*SYSTEM_SPEED_MHZ);
