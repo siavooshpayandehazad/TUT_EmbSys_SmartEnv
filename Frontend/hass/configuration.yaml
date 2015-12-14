@@ -67,7 +67,7 @@ group:
 sensor 41:
   platform: command_sensor_custom
   name: CPU
-  command: "sh /home/manki/.homeassistant/scr/cpu_freq.sh"
+  command: "sh /home/pi/.homeassistant/scr/cpu_freq.sh"
   unit_of_measurement: "MHz"
   decimal_places: 0
 
@@ -145,6 +145,7 @@ sensor 62:
   platform: command_sensor_custom
   name: Soil temperature
   command: "getsens p6.temp"
+  unit_of_measurement: "°C"
 
 sensor 63:
   platform: command_sensor_custom
