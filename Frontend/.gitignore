@@ -11,6 +11,8 @@ hass/home-assistant.db
 hass/home-assistant.log
 hass/lib/
 hass/data/*
+hass/source
 
+*~
 *.local
 *.local.*
