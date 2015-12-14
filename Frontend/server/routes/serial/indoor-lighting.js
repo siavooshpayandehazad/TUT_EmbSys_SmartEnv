@@ -35,15 +35,19 @@ module.exports = function (parent) {
         };
     }
 
-/*    serial.onOpen(function () {
+    serial.onOpen(function () {
 
         var pollConf = config.modules.indoorLighting.poll;
 
         setTimeout(function () {
+
+            // TODO: read actual values from files instead of zeros
+
             serial.write({
-                to: config.modules.flowerBox.address,
-                data: ['S']
+                to: config.modules.indoorLighting.address,
+                data: ['L', 0, 0, 0, 0, 0]
             });
+
         }, pollConf.start);
 
     });
@@ -56,7 +60,7 @@ module.exports = function (parent) {
         packet.log.info({route: 'S', data: packet.data}, 'Handling packet');
 
         updateStatusFiles(packet.data.slice(1));
-    });*/
+    });
 
     return router;
 };
