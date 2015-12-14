@@ -21,7 +21,7 @@ function updateStatusFiles(leds, noConversion) {
 
     leds.forEach(function (value, index) {
         // Convert byte values of brightness to percentage
-        stateMap['p6.led' + (index + 1)] = noConversion ? value : Math.round(value * 100 / 255);
+        stateMap['p15.led' + (index + 1)] = noConversion ? value : Math.round(value * 100 / 255);
     });
 
     statusFiles.updateMany(stateMap);
@@ -30,6 +30,7 @@ function updateStatusFiles(leds, noConversion) {
 module.exports = function (parent) {
     if (parent === 'api') {
         return {
+            statusFiles: statusFiles,
             updateStatusFiles: updateStatusFiles
         };
     }

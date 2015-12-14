@@ -42,22 +42,54 @@ module.exports = function (opts) {
 
     router.route('15', function (packet, next) {
         var command = packet.data[0];
+        packet.log.debug({data: packet.data, commmand: command}, 'Handling indoor lighting command');
 
-        if (command === 'L') {
+        if (command[0] === 'L') {
             // Convert percentage values to bytes
-            var sendData = ['L'];
-            for (var i = 1; i <= 6; ++i) {
-                sendData[i] = Math.round(packet.data[i] * 255 / 100);
+
+            // Led index starts from 1
+            var ledIndex = parseInt(command[1], 10);
+            var ledValue = parseInt(packet.data[1], 10) || 0;
+
+            if (ledIndex < 1 || ledIndex > 6) {
+                packet.log.error({command: command, ledIndex: ledIndex}, 'Wrong led index');
+                next(new Error('Wrong led index'));
+                return;
             }
 
-            // Send command
-            serial.write({
-                to: 15,
-                data: sendData
-            });
+            var files = [1, 2, 3, 4, 5, 6]
+                .filter(function (index) {
+                    return index !== ledIndex;
+                })
+                .map(function (index) {
+                    return 'p15.led' + index;
+                });
 
-            // Update status files
-            indoorLighting.updateStatusFiles(packet.data.slice(1), true);
+            indoorLighting.statusFiles.readMany(files, function (err, values) {
+                if (err) {
+                    packet.log.error({err: err}, 'Failed to read status of indoor lights');
+                    return;
+                }
+
+                var sendData = ['L'];
+                for (var i = 1; i <= 6; ++i) {
+                    if (i === ledIndex) {
+                        sendData[i] = Math.round(ledValue * 255 / 100);
+                        continue;
+                    }
+
+                    sendData[i] = Math.round(values['p15.led' + i] * 255 / 100);
+                }
+
+                // Send command
+                serial.write({
+                    to: 15,
+                    data: sendData
+                });
+
+                // Update status files
+                indoorLighting.updateStatusFiles(packet.data.slice(1), true);
+            });
 
             return;
         }
