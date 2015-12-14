@@ -4,6 +4,8 @@ var async = require('async');
 var fs = require('fs');
 var path = require('path');
 
+// TODO: Use promises instead of callbacks
+
 function ModuleStatus(opts) {
     if (!(this instanceof ModuleStatus)) {
         return new ModuleStatus(opts);
@@ -100,6 +102,75 @@ ModuleStatus.prototype.updateMany = function updateMany(map, cb) {
             cb(err);
         }
     });
+};
+
+ModuleStatus.prototype.read = function read(name, cb) {
+
+    var file = this._files[name];
+
+    if (!file) {
+        setImmediate(cb, new TypeError('No such state file defined: ' + name));
+        return;
+    }
+
+    var filePath = path.join(this._dir, name);
+
+    fs.readFile(filePath, {encoding: 'utf8'}, function (err, data) {
+        // Ignore ENOENT errors (No such file or directory)
+        if (err && err.code !== 'ENOENT') {
+            setImmediate(cb, err);
+            return;
+        }
+
+        var value = data;
+
+        switch (file.type) {
+            case 'number':
+                value = parseInt(value, 10) || 0;
+                break;
+            case 'bool':
+                value = !!(parseInt(value, 10) || value === 'true');
+                break;
+        }
+
+        setImmediate(cb, null, value);
+    });
+};
+
+ModuleStatus.prototype.readMany = function readMany(names, cb) {
+
+    var _this = this;
+
+    var missing = [];
+
+    names.forEach(function (name) {
+        if (!_this._files[name]) {
+            missing.push(name);
+        }
+    });
+
+    if (missing.length) {
+        setImmediate(cb, new TypeError('No such file(s) defined: ' + missing.join(', ')));
+        return;
+    }
+
+    async.map(names, function (name, cb) {
+        _this.read(name, cb);
+    }, function (err, results) {
+        if (err) {
+            cb(err);
+            return;
+        }
+
+        var map = {};
+
+        names.forEach(function (name, index) {
+            map[name] = results[index];
+        });
+
+        cb(null, map);
+    });
+
 };
 
 module.exports = ModuleStatus;

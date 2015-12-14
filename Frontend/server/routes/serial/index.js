@@ -31,6 +31,7 @@ module.exports = function (opts) {
     router.route(3, require('./outdoor')(router));
     router.route(5, require('./fish-feeder')(router));
     router.route(6, require('./flower-box')(router));
+    router.route(14, require('./meter-reporter')(router));
 
     return router;
 };
