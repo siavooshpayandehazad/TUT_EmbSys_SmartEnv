@@ -36,7 +36,7 @@ module.exports = function (opts) {
 
     router.route('DEBUG', function (packet, next) {
         // Write raw data
-        packet.debug({data: packet.data}, 'Passing DEBUG packet from frontend to serial');
+        packet.log.debug({data: packet.data}, 'Passing DEBUG packet from frontend to serial');
         serial.write(packet.data);
     });
 
