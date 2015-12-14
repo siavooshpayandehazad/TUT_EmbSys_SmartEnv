@@ -181,24 +181,24 @@ switch 1:
   platform: command_switch
   switches:
     Door Lock:
-      oncmd: "sendcomm 2 L 1"
-      offcmd: "sendcomm 2 L 0"
+      oncmd: "sendcmd 2 L 1"
+      offcmd: "sendcmd 2 L 0"
 
 switch 2:
   platform: command_switch
   switches:
     LED 1:
-      oncmd: "sendcomm 15 L1 100"
-      offcmd: "sendcomm 15 L1 0"
+      oncmd: "sendcmd 15 L1 100"
+      offcmd: "sendcmd 15 L1 0"
     LED 2:
-      oncmd: "sendcomm 15 L2 100"
-      offcmd: "sendcomm 15 L2 0"
+      oncmd: "sendcmd 15 L2 100"
+      offcmd: "sendcmd 15 L2 0"
     LED 3:
-      oncmd: "sendcomm 15 L3 100"
-      offcmd: "sendcomm 15 L3 0"
+      oncmd: "sendcmd 15 L3 100"
+      offcmd: "sendcmd 15 L3 0"
     LED 4:
-      oncmd: "sendcomm 15 L4 100"
-      offcmd: "sendcomm 15 L4 0"
+      oncmd: "sendcmd 15 L4 100"
+      offcmd: "sendcmd 15 L4 0"
 
 automation:
 - alias: "Update door lock on"
